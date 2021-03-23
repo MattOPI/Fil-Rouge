@@ -6,15 +6,15 @@
 #include <hash.h>
 /*
   Structure de données représentant un annuaire.
-  Son contenu est détaillé dans directory.c.
+  Son contenu est détaillé dans directory.c. rien changé
 */
 struct dir
 {
   /* taille de l"annuaire */
   uint32_t len;
 
-  /* tableau de pointeur représentant l"annuaire */
-  struct CelluleContact **T[];
+    /* tableau de pointeur représentant l'annuaire */
+    struct CelluleContact *T[];
 };
 
 /*
@@ -22,19 +22,23 @@ struct dir
 */
 struct dir *dir_create(uint32_t len)
 {
-  struct dir *annuaire;
-  (*annuaire).len = len;
-  (*annuaire).T[len] = malloc(sizeof(struct CelluleContact *) * len);
-
-  for (int i = 0; i < len; i++)
-  {
-    struct CelluleContact *balise_fin = nouvelle_cellule("zzzzzzzz", NULL);
-    // il y a t"il une balise de fin mieux pour l"ordre lexicographique?
-    struct CelluleContact *balise_debut = nouvelle_cellule(" ", balise_fin);
-    // il y a t"il une balise de debut mieux pour l"ordre lexicographique?
-    (*annuaire).T[i] = balise_debut;
-  }
-  return annuaire;
+    struct dir *annuaire;
+    (*annuaire).len = len;
+    (*annuaire).T[len] = calloc(len, sizeof(struct  CelluleContact *));
+    int i;
+    for (i = 0 ; i < len; i++){
+      const char *dernier_nom = "zzzzzzzz";
+      const char *premier_nom = "aaaaaaaa";
+      const char *numero_vide = " ";
+      struct Contact *dernier_contact = nouveau_contact(dernier_nom, numero_vide);
+      struct Contact *premier_contact = nouveau_contact(premier_nom, numero_vide);
+      struct CelluleContact *balise_fin = nouvelle_cellule(NULL, dernier_contact);
+      // il y a t'il une balise de fin mieux pour l'ordre lexicographique?
+      struct CelluleContact *balise_debut = nouvelle_cellule(balise_fin, premier_contact);
+      // il y a t'il une balise de debut mieux pour l'ordre lexicographique?
+      (*annuaire).T[i] = balise_debut;
+    }
+    return annuaire;
 }
 
 /*
@@ -45,10 +49,10 @@ struct dir *dir_create(uint32_t len)
 */
 char *dir_insert(struct dir *dir, const char *name, const char *num)
 {
-  int indice = hash(*name) % (*dir).len;
-  struct Contact *n_contact = nouveau_contact(name, num);
+    int indice = hash(name) % (*dir).len;
+    struct Contact *n_contact = nouveau_contact(name, num);
 
-  return insere(nouveau_contact, (*dir).T[indice]); // type imcomplet?
+    return insere(n_contact, (*dir).T[indice]);
 }
 
 /*
@@ -57,8 +61,8 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
 */
 const char *dir_lookup_num(struct dir *dir, const char *name)
 {
-  int indice = hash(*name) % (*dir).len;    // comment j"accede à la longueur?
-  return recherche(name, (*dir).T[indice]); // type imcomplet?
+    int indice = hash(name) % (*dir).len;
+    return recherche(name, (*dir).T[indice]);
 }
 
 /*
@@ -67,8 +71,8 @@ const char *dir_lookup_num(struct dir *dir, const char *name)
 */
 void dir_delete(struct dir *dir, const char *name)
 {
-  int indice = hash(*name) % (*dir).len; // comment j"accede à la longueur?
-  supprime(name, (*dir).T[indice]);      // type imcomplet?
+    int indice = hash(name) % (*dir).len;
+    supprime(name, (*dir).T[indice]);
 }
 
 /*
@@ -84,11 +88,10 @@ void dir_free(struct dir *dir)
 */
 void dir_print(struct dir *dir)
 {
-  for (int i = 0; i < (*dir).len; i++)
-  {                       // comment j"accede à la longueur?
-    affiche((*dir).T[i]); // type imcomplet?
-    printf("\n");
-  }
+    int i;
+    for(i= 0; i < (*dir).len; i++ ){
+      printf("\n");
+    }
 }
 
 void main()
