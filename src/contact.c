@@ -11,7 +11,7 @@ struct Contact   // comment peut-on rentrer des valeurs des la contruction du ty
 };
 
 
-struct Contact *nouveau_contact(char *nom, char *numero)
+struct Contact *nouveau_contact(const char *nom, const char *numero)
 {
     struct Contact *n_contact = malloc(sizeof( struct Contact));
     n_contact->nom = nom;
@@ -45,7 +45,7 @@ struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct C
 
 
 
-char *insere(struct Contact *contact, struct CelluleContact *tete)
+const char *insere(struct Contact *contact, struct CelluleContact *tete)
 {
     struct CelluleContact *cellule_courante = tete;
     struct CelluleContact *n_cellule = nouvelle_cellule(NULL, contact);
@@ -61,7 +61,7 @@ char *insere(struct Contact *contact, struct CelluleContact *tete)
 
         } else if( cellule_courante->suivant->contact->nom < contact->nom){
             // comparaison lexicographique?
-            char *ancien_num = cellule_courante->suivant->contact->numero;
+            const char *ancien_num = cellule_courante->suivant->contact->numero;
 
             n_cellule->suivant = cellule_courante->suivant;
             cellule_courante->suivant = n_cellule;
@@ -72,7 +72,7 @@ char *insere(struct Contact *contact, struct CelluleContact *tete)
 }
 
 
-char *recherche(char *nom, struct CelluleContact *tete)
+const char *recherche(const char *nom, struct CelluleContact *tete)
 {
     struct CelluleContact *cellule_courante = tete;
 
@@ -85,7 +85,7 @@ char *recherche(char *nom, struct CelluleContact *tete)
 }
 
 
-void supprime(char *nom, struct CelluleContact *tete)
+void supprime(const char *nom, struct CelluleContact *tete)
 {
     struct CelluleContact *cellule_courante = tete;
 

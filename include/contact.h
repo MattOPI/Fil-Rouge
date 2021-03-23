@@ -6,7 +6,7 @@
 */
 struct Contact;
 
-struct Contact *nouveau_contact(char *nom, char *numero);
+struct Contact *nouveau_contact(const char *nom, const char *numero);
 
 void affche_contact( struct Contact *contact);
 
@@ -16,11 +16,11 @@ struct CelluleContact;
 
 struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct Contact *contact);
 
-char *insere(struct Contact *, struct CelluleContact *);
+const char *insere(struct Contact *, struct CelluleContact *);
 
-char *recherche(char *nom, struct CelluleContact *tete);
+const char *recherche(const char *nom, struct CelluleContact *tete);
 
-void supprime(char *nom, struct CelluleContact *tete);
+void supprime(const char *nom, struct CelluleContact *tete);
 
 void affiche_cel(struct CelluleContact *tete);
 
