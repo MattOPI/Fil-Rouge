@@ -6,7 +6,7 @@
 #include <hash.h>
 /*
   Structure de données représentant un annuaire.
-  Son contenu est détaillé dans directory.c.
+  Son contenu est détaillé dans directory.c. rien changé
 */
 struct dir
 {
