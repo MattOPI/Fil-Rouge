@@ -2,18 +2,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-struct Contact // comment peut-on rentrer des valeurs des la contruction du type? style contact(nom, num)
+struct Contact   // comment peut-on rentrer des valeurs des la contruction du type? style contact(nom, num)
 {
     /* valeurs */
     const char *nom;
     const char *numero;
+
 };
 
-struct Contact *nouveau_contact(const char *nom, const char *numero)
+
+struct Contact *nouveau_contact(char *nom, char *numero)
 {
-    struct Contact *n_contact = malloc(sizeof(struct Contact));
+    struct Contact *n_contact = malloc(sizeof( struct Contact));
     n_contact->nom = nom;
-    (*n_contact).numero = numero;
+    n_contact->numero = numero;
     return n_contact;
 }
 
@@ -22,86 +24,83 @@ void affiche_contact( struct Contact *contact){
     printf("(%s, %s)", contact->nom, contact->numero);
 }
 
+
 struct CelluleContact
 {
-    /* valeur*/
+        /* valeur*/
     struct Contact *contact;
 
     /* suivant */
     struct CelluleContact *suivant; // voir pour la valeur par default
 };
 
+
 struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct Contact *contact)
 {
-    struct CelluleContact *n_cellule = malloc(sizeof(struct CelluleContact));
-    (*n_cellule).contact = contact;
-    (*n_cellule).suivant = suivant;
+    struct CelluleContact *n_cellule = malloc(sizeof( struct CelluleContact));
+    n_cellule->contact = contact;
+    n_cellule->suivant = suivant;
     return n_cellule;
 }
+
+
 
 char *insere(struct Contact *contact, struct CelluleContact *tete)
 {
     struct CelluleContact *cellule_courante = tete;
     struct CelluleContact *n_cellule = nouvelle_cellule(NULL, contact);
 
-    while (cellule_courante->suivant->contact->nom != "zzzzzzzz")
-    {
-        if (cellule_courante->suivant->contact->nom == contact->nom)
-        {
-            struct Contact *ancien_contact = (*(*cellule_courante).suivant).contact;
+    while( cellule_courante->suivant->contact->nom != "zzzzzzzz"){
+        if( cellule_courante->suivant->contact->nom == contact->nom){
+            struct Contact *ancien_contact = cellule_courante->suivant->contact;
 
-            (*n_cellule).suivant = (*(*cellule_courante).suivant).suivant;
-            (*cellule_courante).suivant = n_cellule;
+            n_cellule->suivant = cellule_courante->suivant->suivant;
+            cellule_courante->suivant = n_cellule;
 
-            return (*ancien_contact).numero;
-        }
-        else if ((*(*(*cellule_courante).suivant).contact).nom < (*contact).nom)
-        {
+            return ancien_contact->numero;
+
+        } else if( cellule_courante->suivant->contact->nom < contact->nom){
             // comparaison lexicographique?
-            char *ancien_num = (*(*(*cellule_courante).suivant).contact).numero;
+            char *ancien_num = cellule_courante->suivant->contact->numero;
 
-            (*n_cellule).suivant = (*cellule_courante).suivant;
-            (*cellule_courante).suivant = n_cellule;
+            n_cellule->suivant = cellule_courante->suivant;
+            cellule_courante->suivant = n_cellule;
             return NULL;
         }
-        cellule_courante = (*cellule_courante).suivant;
+        cellule_courante = cellule_courante->suivant;
     }
 }
 
-char *recherche(const char *nom, struct CelluleContact *tete)
+
+char *recherche(char *nom, struct CelluleContact *tete)
 {
     struct CelluleContact *cellule_courante = tete;
 
-    while (*(*(*cellule_courante).contact).nom != "zzzzzzzz")
-    {
-        if ((*(*cellule_courante).contact).nom == nom)
-        {
-            return (*(*cellule_courante).contact).numero;
+    while ( cellule_courante->contact->nom != "zzzzzzzz"){
+        if (cellule_courante->contact->nom == nom){
+            return cellule_courante->contact->numero;
         }
     }
     return NULL;
 }
 
-void supprime(const char *nom, struct CelluleContact *tete)
+
+void supprime(char *nom, struct CelluleContact *tete)
 {
     struct CelluleContact *cellule_courante = tete;
 
-    while (*(*(*(*cellule_courante).suivant).contact).nom != "zzzzzzzz")
-    {
-        if ((*(*(*cellule_courante).suivant).contact).nom == nom)
-        {
-            (*cellule_courante).suivant = (*(*cellule_courante).suivant).suivant;
+    while( cellule_courante->suivant->contact->nom != "zzzzzzzz"){
+        if( cellule_courante->suivant->contact->nom  == nom){
+            cellule_courante->suivant = cellule_courante->suivant->suivant;
         }
     }
 }
 
-void affiche_cel(struct CelluleContact *tete)
-{
-    struct CelluleContact *cellule_courante = (*tete).suivant;
+void affiche_cel(struct CelluleContact *tete){
+    struct CelluleContact *cellule_courante = tete->suivant;
 
-    while (*(*(*cellule_courante).contact).nom != "zzzzzzzz")
-    {
-        affiche_contact((*cellule_courante).contact);
+    while( cellule_courante->contact->nom != "zzzzzzzz"){
+        affiche_contact(cellule_courante->contact);
         printf("\n");
     }
 }

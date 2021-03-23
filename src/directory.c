@@ -23,8 +23,8 @@ struct dir
 struct dir *dir_create(uint32_t len)
 {
     struct dir *annuaire;
-    (*annuaire).len = len;
-    (*annuaire).T[len] = calloc(len, sizeof(struct  CelluleContact *));
+    annuaire->len = len;
+    annuaire->T[len] = calloc(len, sizeof(struct  CelluleContact *));
     int i;
     for (i = 0 ; i < len; i++){
       const char *dernier_nom = "zzzzzzzz";
@@ -36,7 +36,7 @@ struct dir *dir_create(uint32_t len)
       // il y a t'il une balise de fin mieux pour l'ordre lexicographique?
       struct CelluleContact *balise_debut = nouvelle_cellule(balise_fin, premier_contact);
       // il y a t'il une balise de debut mieux pour l'ordre lexicographique?
-      (*annuaire).T[i] = balise_debut;
+      annuaire->T[i] = balise_debut;
     }
     return annuaire;
 }
@@ -49,10 +49,10 @@ struct dir *dir_create(uint32_t len)
 */
 char *dir_insert(struct dir *dir, const char *name, const char *num)
 {
-    int indice = hash(name) % (*dir).len;
+    int indice = hash(name) % dir->len;
     struct Contact *n_contact = nouveau_contact(name, num);
 
-    return insere(n_contact, (*dir).T[indice]);
+    return insere(n_contact, dir->T[indice]);
 }
 
 /*
@@ -61,8 +61,8 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
 */
 const char *dir_lookup_num(struct dir *dir, const char *name)
 {
-    int indice = hash(name) % (*dir).len;
-    return recherche(name, (*dir).T[indice]);
+    int indice = hash(name) % dir->len;
+    return recherche(name, dir->T[indice]);
 }
 
 /*
@@ -71,8 +71,8 @@ const char *dir_lookup_num(struct dir *dir, const char *name)
 */
 void dir_delete(struct dir *dir, const char *name)
 {
-    int indice = hash(name) % (*dir).len;
-    supprime(name, (*dir).T[indice]);
+    int indice = hash(name) % dir->len;
+    supprime(name, dir->T[indice]);
 }
 
 /*
@@ -89,7 +89,7 @@ void dir_free(struct dir *dir)
 void dir_print(struct dir *dir)
 {
     int i;
-    for(i= 0; i < (*dir).len; i++ ){
+    for(i= 0; i < dir->len; i++ ){
       printf("\n");
     }
 }
