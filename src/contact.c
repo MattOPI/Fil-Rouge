@@ -20,8 +20,8 @@ struct Contact *nouveau_contact(char *nom, char *numero)
 }
 
 
-void affche_contact( struct Contact *contact){
-    printf('(%s, %s)', *(*contact).nom, *(*contact).numero);
+void affiche_contact( struct Contact *contact){
+    printf("(%s, %s)", *(*contact).nom, *(*contact).numero);
 }
 
 
@@ -50,7 +50,7 @@ char *insere(struct Contact *contact, struct CelluleContact *tete)
     struct CelluleContact *cellule_courante = tete;
     struct CelluleContact *n_cellule = nouvelle_cellule(NULL, contact);
 
-    while( (*(*(*cellule_courante).suivant).contact).nom != 'zzzzzzzz'){
+    while( (*(*(*cellule_courante).suivant).contact).nom != "zzzzzzzz"){
         if( (*(*(*cellule_courante).suivant).contact).nom == (*contact).nom){
             struct Contact *ancien_contact = (*(*cellule_courante).suivant).contact;
 
@@ -76,7 +76,7 @@ char *recherche(char *nom, struct CelluleContact *tete)
 {
     struct CelluleContact *cellule_courante = tete;
 
-    while ( (*(*cellule_courante).contact).nom != 'zzzzzzzz'){
+    while ( (*(*cellule_courante).contact).nom != "zzzzzzzz"){
         if ((*(*cellule_courante).contact).nom == nom){
             return (*(*cellule_courante).contact).numero;
         }
@@ -89,7 +89,7 @@ void supprime(char *nom, struct CelluleContact *tete)
 {
     struct CelluleContact *cellule_courante = tete;
 
-    while( (*(*(*cellule_courante).suivant).contact).nom != 'zzzzzzzz'){
+    while( (*(*(*cellule_courante).suivant).contact).nom != "zzzzzzzz"){
         if( (*(*(*cellule_courante).suivant).contact).nom  == nom){
             (*cellule_courante).suivant = (*(*cellule_courante).suivant).suivant;
         }
@@ -99,8 +99,8 @@ void supprime(char *nom, struct CelluleContact *tete)
 void affiche_cel(struct CelluleContact *tete){
     struct CelluleContact *cellule_courante = (*tete).suivant;
 
-    while( (*(*cellule_courante).contact).nom != 'zzzzzzzz'){
+    while( (*(*cellule_courante).contact).nom != "zzzzzzzz"){
         affiche_contact((*cellule_courante).contact);
-        printf('\n');
+        printf("\n");
     }
 }
