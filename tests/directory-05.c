@@ -24,7 +24,8 @@ int main(void)
         "Sergent Mayo"
     };
 
-    for (size_t id = 0; id < 4; id++) {
+    size_t id;
+    for (id = 0; id < 4; id++) {
         dir_delete(dir, names[id]);
         dir_print(dir);
     }

@@ -24,7 +24,8 @@ int main(void)
         "Tartempion"
     };
 
-    for (size_t id = 0; id < 4; id++) {
+    size_t id;
+    for (id = 0; id < 4; id++) {
         const char *num = dir_lookup_num(dir, names[id]);
         if (num == NULL) {
             printf("%s ne figure pas dans l'directory!\n", names[id]);

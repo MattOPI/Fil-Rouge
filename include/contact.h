@@ -16,9 +16,9 @@ struct CelluleContact;
 
 struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct Contact *contact);
 
-char *insere(struct Contact *, struct CelluleContact *);
+const char *insere(struct Contact *, struct CelluleContact *);
 
-char *recherche(const char *nom, struct CelluleContact *tete);
+const char *recherche(const char *nom, struct CelluleContact *tete);
 
 void supprime(const char *nom, struct CelluleContact *tete);
 

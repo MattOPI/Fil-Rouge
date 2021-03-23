@@ -25,13 +25,14 @@ struct dir *dir_create(uint32_t len)
     struct dir *annuaire;
     annuaire->len = len;
     annuaire->T[len] = calloc(len, sizeof(struct  CelluleContact *));
-    int i;
+    uint32_t i;
     for (i = 0 ; i < len; i++){
       const char *dernier_nom = "zzzzzzzz";
       const char *premier_nom = "aaaaaaaa";
       const char *numero_vide = " ";
       struct Contact *dernier_contact = nouveau_contact(dernier_nom, numero_vide);
       struct Contact *premier_contact = nouveau_contact(premier_nom, numero_vide);
+
       struct CelluleContact *balise_fin = nouvelle_cellule(NULL, dernier_contact);
       // il y a t'il une balise de fin mieux pour l'ordre lexicographique?
       struct CelluleContact *balise_debut = nouvelle_cellule(balise_fin, premier_contact);
@@ -88,13 +89,8 @@ void dir_free(struct dir *dir)
 */
 void dir_print(struct dir *dir)
 {
-    int i;
+    uint32_t i;
     for(i= 0; i < dir->len; i++ ){
       printf("\n");
     }
-}
-
-void main()
-{
-  return EXIT_SUCCESS;
 }
