@@ -14,7 +14,7 @@ struct dir
     uint32_t len;
 
     /* tableau de pointeur représentant l'annuaire */
-    struct CelluleContact **T[];
+    struct CelluleContact *T[];
 };
 
 /*
@@ -25,11 +25,13 @@ struct dir *dir_create(uint32_t len)
     struct dir *annuaire;
     (*annuaire).len = len;
     (*annuaire).T[len] = calloc(len, sizeof(struct  CelluleContact *));
-
-    for ( int i = 0; i < len; i++){
-      struct CelluleContact *balise_fin = nouvelle_cellule("zzzzzzzz", NULL);
+    int i;
+    for (i = 0 ; i < len; i++){
+      struct contact *dernier_contact = nouveau_contact("zzzzzzzz", " ");
+      struct contact *premier_contact = nouveau_contact("aaaaaaaa", " ");
+      struct CelluleContact *balise_fin = nouvelle_cellule(NULL, dernier_contact);
       // il y a t'il une balise de fin mieux pour l'ordre lexicographique?
-      struct CelluleContact *balise_debut = nouvelle_cellule(" ", balise_fin);
+      struct CelluleContact *balise_debut = nouvelle_cellule(balise_fin, premier_contact);
       // il y a t'il une balise de debut mieux pour l'ordre lexicographique?
       (*annuaire).T[i] = balise_debut;
     }
@@ -44,7 +46,7 @@ struct dir *dir_create(uint32_t len)
 */
 char *dir_insert(struct dir *dir, const char *name, const char *num)
 {
-    int indice = hash(*name) % (*dir).len;
+    int indice = hash(name) % (*dir).len;
     struct Contact *n_contact = nouveau_contact(name, num);
 
     return insere(nouveau_contact, (*dir).T[indice]);
@@ -56,7 +58,7 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
 */
 const char *dir_lookup_num(struct dir *dir, const char *name)
 {
-    int indice = hash(*name) % (*dir).len;
+    int indice = hash(name) % (*dir).len;
     return recherche(name, (*dir).T[indice]);
 }
 
@@ -66,7 +68,7 @@ const char *dir_lookup_num(struct dir *dir, const char *name)
 */
 void dir_delete(struct dir *dir, const char *name)
 {
-    int indice = hash(*name) % (*dir).len;
+    int indice = hash(name) % (*dir).len;
     supprime(name, (*dir).T[indice]);
 }
 
@@ -83,7 +85,8 @@ void dir_free(struct dir *dir)
 */
 void dir_print(struct dir *dir)
 {
-    for(int i = 0; i < (*dir).len; i++ ){
+    int i;
+    for(i= 0; i < (*dir).len; i++ ){
       printf("\n");
     }
 }
