@@ -68,6 +68,7 @@ const char *insere(struct Contact *contact, struct CelluleContact *tete)
         }
         cellule_courante = cellule_courante->suivant;
     }
+    return NULL;
 }
 
 
