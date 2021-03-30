@@ -65,6 +65,7 @@ const char *insere(struct Contact *contact, struct CelluleContact *tete)
 {
     struct CelluleContact *cellule_courante = tete;
     struct CelluleContact *n_cellule = nouvelle_cellule(NULL, contact);
+    const char *res = NULL;
 
     while( cellule_courante->suivant != NULL){
         if( cellule_courante->suivant->contact->hash == contact->hash){
@@ -73,14 +74,15 @@ const char *insere(struct Contact *contact, struct CelluleContact *tete)
             n_cellule->suivant = cellule_courante->suivant->suivant;
             cellule_courante->suivant = n_cellule;
 
-            return ancien_contact->numero;
+            res = ancien_contact->numero;
+            free(ancien_contact);
         }
         cellule_courante = cellule_courante->suivant;
     }
 
-    n_cellule->suivant = cellule_courante->suivant;
     cellule_courante->suivant = n_cellule;
-    return NULL;
+
+    return res;
 }
 
 

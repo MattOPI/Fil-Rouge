@@ -48,7 +48,7 @@ struct dir *dir_create(uint32_t len)
 char *dir_insert(struct dir *dir, const char *name, const char *num)
 {
     uint32_t h = hash(name);
-    uint32_t indice = h % dir->len;
+    uint32_t indice = h % (dir->len);
     struct Contact *n_contact = nouveau_contact(name, num, h);
     const char *res = insere(n_contact, dir->T[indice]);
     /*
