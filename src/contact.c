@@ -95,6 +95,7 @@ const char *recherche(const char *nom, struct CelluleContact *tete)
         if (*cellule_courante->contact->hash == h_nom){
             return cellule_courante->contact->numero;
         }
+        cellule_courante = cellule_courante->suivant;
     }
     return NULL;
 }
