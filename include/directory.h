@@ -44,4 +44,9 @@ extern void dir_free(struct dir *dir);
 */
 extern void dir_print(struct dir *dir);
 
+/*
+  Redimensionne la table de l'annuaire _dir_.
+*/
+extern void dir_resize(struct dir *dir, uint32_t size);
+
 #endif /* _DIRECTORY_H_ */
