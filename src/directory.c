@@ -13,6 +13,12 @@ struct dir
   /* taille de l"annuaire */
   uint32_t len;
 
+<<<<<<< HEAD
+=======
+  /* remplissage */
+  uint32_t occ;
+
+>>>>>>> 7532a9324169475b25663126d2f16182d3947ede
   /* tableau de pointeur représentant l'annuaire */
   struct CelluleContact *T[];
 };
@@ -24,20 +30,12 @@ struct dir *dir_create(uint32_t len)
 {
     struct dir *annuaire = NULL;
     annuaire->len = len;
+    annuaire->occ = 0;
     annuaire->T[len] = calloc(len, sizeof(struct  CelluleContact *));
+
     uint32_t i;
     for (i = 0 ; i < len; i++){
-      const char *dernier_nom = "zzzzzzzz";
-      const char *premier_nom = "aaaaaaaa";
-      const char *numero_vide = " ";
-      struct Contact *dernier_contact = nouveau_contact(dernier_nom, numero_vide);
-      struct Contact *premier_contact = nouveau_contact(premier_nom, numero_vide);
-
-      struct CelluleContact *balise_fin = nouvelle_cellule(NULL, dernier_contact);
-      // il y a t'il une balise de fin mieux pour l'ordre lexicographique?
-      struct CelluleContact *balise_debut = nouvelle_cellule(balise_fin, premier_contact);
-      // il y a t'il une balise de debut mieux pour l'ordre lexicographique?
-      annuaire->T[i] = balise_debut;
+      annuaire->T[i] = NULL;
     }
     return annuaire;
 }
@@ -51,9 +49,16 @@ struct dir *dir_create(uint32_t len)
 char *dir_insert(struct dir *dir, const char *name, const char *num)
 {
     int indice = hash(name) % dir->len;
-    struct Contact *n_contact = nouveau_contact(name, num);
+    struct Contact *n_contact = nouveau_contact(name, num, hash(name));
+    char *res = insere(n_contact, dir->T[indice]);
 
-    return insere(n_contact, dir->T[indice]);
+    if (res == NULL){
+      dir->occ += 1;
+      return NULL;
+
+    } else {
+      return res;
+    }
 }
 
 /*
@@ -91,6 +96,24 @@ void dir_print(struct dir *dir)
 {
     uint32_t i;
     for(i= 0; i < dir->len; i++ ){
+      affiche_cel(dir->T[i]);
       printf("\n");
     }
+}
+
+/*
+  Redimensionne la table de l'annuaire _dir_.
+*/
+void dir_resize(struct dir *dir, uint32_t size)
+{
+    struct dir *n_annuaire = dir_create(size);
+    uint32_t i;
+    for(i= 0; i < dir->len; i++ ){
+
+      while (dir->T[i] != NULL)
+      {
+        dir_insere(n_annuaire, dir->T[i]->contact->nom, dir->T[i]->contact->num);
+      }
+    }
+
 }
