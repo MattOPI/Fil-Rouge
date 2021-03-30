@@ -105,6 +105,7 @@ void dir_print(struct dir *dir)
     uint32_t i;
     for(i= 0; i < dir->len; i++ ){
       affiche_cel(dir->T[i]);
+      // printf("\n");
     }
 }
 

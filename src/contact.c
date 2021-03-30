@@ -10,12 +10,12 @@ struct Contact   // comment peut-on rentrer des valeurs des la contruction du ty
     /* valeurs */
     const char *nom;
     const char *numero;
-    const uint32_t *hash;
+    uint32_t hash;
 
 };
 
 
-struct Contact *nouveau_contact(const char *nom, const char *numero, uint32_t *hash)
+struct Contact *nouveau_contact(const char *nom, const char *numero, uint32_t hash)
 {
     struct Contact *n_contact = calloc(1, sizeof( struct Contact));
     n_contact->nom = nom;
@@ -92,7 +92,7 @@ const char *recherche(const char *nom, struct CelluleContact *tete)
     uint32_t h_nom = hash(nom);
 
     while ( cellule_courante != NULL){
-        if (*cellule_courante->contact->hash == h_nom){
+        if (cellule_courante->contact->hash == h_nom){
             return cellule_courante->contact->numero;
         }
         cellule_courante = cellule_courante->suivant;
@@ -107,7 +107,7 @@ void supprime(const char *nom, struct CelluleContact *tete)
     uint32_t h_nom = hash(nom);
 
     while( cellule_courante->suivant != NULL){
-        if (*cellule_courante->suivant->contact->hash  == h_nom){
+        if (cellule_courante->suivant->contact->hash  == h_nom){
             struct CelluleContact *cellule_suppr = cellule_courante->suivant;
             cellule_courante->suivant = cellule_courante->suivant->suivant;
             free(cellule_suppr);
@@ -116,7 +116,7 @@ void supprime(const char *nom, struct CelluleContact *tete)
 }
 
 void affiche_cel(struct CelluleContact *tete){
-    struct CelluleContact *cellule_courante = tete;
+    struct CelluleContact *cellule_courante = tete->suivant;
 
     while( cellule_courante != NULL){
         affiche_contact(cellule_courante->contact);
