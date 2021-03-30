@@ -4,13 +4,11 @@
 uint32_t hash(const char *str)
 {
     int hash = 5381;
-    int *indice = 0;
-    char c = (*str)[indice];
+    int indice = 0;
 
-    while(c != '\0'){
-        hash += c; // a modifier, pour avoir ascci(c), commande ?
+    while(str[indice] != '\0'){
+        hash += str[indice];
         indice ++;
-        c = (*str)[indice];
     }
     return hash;
 }

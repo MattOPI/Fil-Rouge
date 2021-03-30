@@ -49,7 +49,6 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
 {
     uint32_t h = hash(name);
     uint32_t indice = h % (dir->len);
-    printf("%u, %u", indice, dir->len);
     struct Contact *n_contact = nouveau_contact(name, num, h);
     const char *res = insere(n_contact, dir->T[indice]);
     /*
@@ -105,7 +104,6 @@ void dir_print(struct dir *dir)
     uint32_t i;
     for(i= 0; i < dir->len; i++ ){
       affiche_cel(dir->T[i]);
-      printf("\n");
     }
 }
 
@@ -123,6 +121,7 @@ void dir_resize(struct dir *dir, uint32_t size)
         const char *nom = get_nom(dir->T[i]);
         const char *num = get_num(dir->T[i]);
         dir_insert(n_annuaire, nom, num);
+        dir_delete(dir, nom);
       }
     }
 

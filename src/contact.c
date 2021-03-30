@@ -120,6 +120,8 @@ void affiche_cel(struct CelluleContact *tete){
     while( cellule_courante != NULL){
         affiche_contact(cellule_courante->contact);
         printf("\n");
+
+        cellule_courante = cellule_courante->suivant;
     }
 }
 
