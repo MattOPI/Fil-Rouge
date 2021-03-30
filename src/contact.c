@@ -53,11 +53,11 @@ struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct C
 }
 
 const char *get_nom(struct CelluleContact *cellule){
-  return cellule->contact->nom;
+    return cellule->contact->nom;
 }
 
 const char *get_num(struct CelluleContact *cellule){
-  return cellule->contact->numero;
+    return cellule->contact->numero;
 }
 
 
@@ -86,7 +86,7 @@ const char *insere(struct Contact *contact, struct CelluleContact *tete)
 
 const char *recherche(const char *nom, struct CelluleContact *tete)
 {
-    struct CelluleContact *cellule_courante = tete;
+    struct CelluleContact *cellule_courante = tete->suivant;
     uint32_t h_nom = hash(nom);
 
     while ( cellule_courante != NULL){
@@ -113,7 +113,7 @@ void supprime(const char *nom, struct CelluleContact *tete)
 }
 
 void affiche_cel(struct CelluleContact *tete){
-    struct CelluleContact *cellule_courante = tete;
+    struct CelluleContact *cellule_courante = tete->suivant;
 
     while( cellule_courante != NULL){
         affiche_contact(cellule_courante->contact);
@@ -122,7 +122,7 @@ void affiche_cel(struct CelluleContact *tete){
 }
 
 void cellule_free(struct CelluleContact *tete){
-    struct CelluleContact *cellule_courante = tete;
+    struct CelluleContact *cellule_courante = tete->suivant;
     while(cellule_courante != NULL){
         struct CelluleContact *cellule_suppr= cellule_courante;
         cellule_courante = cellule_courante->suivant;
@@ -131,4 +131,5 @@ void cellule_free(struct CelluleContact *tete){
         free(cellule_suppr);
     }
     free(cellule_courante);
+    free(tete);
 }
