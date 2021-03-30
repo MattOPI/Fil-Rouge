@@ -13,9 +13,12 @@ struct dir
   /* taille de l"annuaire */
   uint32_t len;
 
+<<<<<<< HEAD
+=======
   /* remplissage */
   uint32_t occ;
 
+>>>>>>> 7532a9324169475b25663126d2f16182d3947ede
   /* tableau de pointeur représentant l'annuaire */
   struct CelluleContact *T[];
 };
@@ -25,7 +28,7 @@ struct dir
 */
 struct dir *dir_create(uint32_t len)
 {
-    struct dir *annuaire;
+    struct dir *annuaire = NULL;
     annuaire->len = len;
     annuaire->occ = 0;
     annuaire->T[len] = calloc(len, sizeof(struct  CelluleContact *));
