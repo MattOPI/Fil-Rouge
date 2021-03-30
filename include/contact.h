@@ -6,15 +6,21 @@
 */
 struct Contact;
 
-struct Contact *nouveau_contact(const char *nom, const char *numero);
+struct Contact *nouveau_contact(const char *nom, const char *numero, uint32_t hash);
 
 void affche_contact( struct Contact *contact);
+
+void contact_free( struct Contact *contact);
 
 /* TOUT DOUX: à compléter */
 /* Profitez de cette période sombre pour braver les interdits et rétablir le contact. */
 struct CelluleContact;
 
 struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct Contact *contact);
+
+const char *get_nom(struct CelluleContact *cellule);
+
+const char *get_num(struct CelluleContact *cellule);
 
 const char *insere(struct Contact *, struct CelluleContact *);
 
@@ -23,5 +29,7 @@ const char *recherche(const char *nom, struct CelluleContact *tete);
 void supprime(const char *nom, struct CelluleContact *tete);
 
 void affiche_cel(struct CelluleContact *tete);
+
+void cellule_free(struct CelluleContact *tete);
 
 #endif /* _CONTACT_H_ */

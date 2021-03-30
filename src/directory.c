@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <directory.h>
 #include <contact.h>
@@ -13,14 +14,11 @@ struct dir
   /* taille de l"annuaire */
   uint32_t len;
 
-<<<<<<< HEAD
-=======
   /* remplissage */
-  uint32_t occ;
+  int occ;
 
->>>>>>> 7532a9324169475b25663126d2f16182d3947ede
   /* tableau de pointeur représentant l'annuaire */
-  struct CelluleContact *T[];
+  struct CelluleContact **T;
 };
 
 /*
@@ -28,10 +26,10 @@ struct dir
 */
 struct dir *dir_create(uint32_t len)
 {
-    struct dir *annuaire = NULL;
+    struct dir *annuaire = calloc(1, sizeof(struct dir));
     annuaire->len = len;
     annuaire->occ = 0;
-    annuaire->T[len] = calloc(len, sizeof(struct  CelluleContact *));
+    annuaire->T = calloc(1, len*sizeof(struct  CelluleContact *));
 
     uint32_t i;
     for (i = 0 ; i < len; i++){
@@ -48,9 +46,13 @@ struct dir *dir_create(uint32_t len)
 */
 char *dir_insert(struct dir *dir, const char *name, const char *num)
 {
-    int indice = hash(name) % dir->len;
-    struct Contact *n_contact = nouveau_contact(name, num, hash(name));
-    char *res = insere(n_contact, dir->T[indice]);
+    uint32_t h = hash(name);
+    uint32_t indice = h % dir->len;
+    struct Contact *n_contact = nouveau_contact(name, num, h);
+    const char *res = insere(n_contact, dir->T[indice]);
+    /*
+    char *res;
+    strcpy(res, c_res);*/
 
     if (res == NULL){
       dir->occ += 1;
@@ -86,6 +88,10 @@ void dir_delete(struct dir *dir, const char *name)
 */
 void dir_free(struct dir *dir)
 {
+  uint32_t i;
+  for(i= 0; i < dir->len; i++ ){
+    cellule_free(dir->T[i]);
+  }
   free(dir);
 }
 
@@ -112,7 +118,9 @@ void dir_resize(struct dir *dir, uint32_t size)
 
       while (dir->T[i] != NULL)
       {
-        dir_insere(n_annuaire, dir->T[i]->contact->nom, dir->T[i]->contact->num);
+        const char *nom = get_nom(dir->T[i]);
+        const char *num = get_num(dir->T[i]);
+        dir_insert(n_annuaire, nom, num);
       }
     }
 
