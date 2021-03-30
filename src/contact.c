@@ -116,7 +116,7 @@ void supprime(const char *nom, struct CelluleContact *tete)
 }
 
 void affiche_cel(struct CelluleContact *tete){
-    struct CelluleContact *cellule_courante = tete->suivant;
+    struct CelluleContact *cellule_courante = tete;
 
     while( cellule_courante != NULL){
         affiche_contact(cellule_courante->contact);

@@ -33,7 +33,8 @@ struct dir *dir_create(uint32_t len)
 
     uint32_t i;
     for (i = 0 ; i < len; i++){
-      struct CelluleContact *sentinelle = nouvelle_cellule(NULL, NULL);
+      struct Contact *c_sentinelle = nouveau_contact("sentinelle", "sentinelle", -1);
+      struct CelluleContact *sentinelle = nouvelle_cellule(NULL, c_sentinelle);
       annuaire->T[i] = sentinelle;
     }
     return annuaire;
