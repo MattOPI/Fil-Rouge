@@ -140,6 +140,7 @@ void dir_resize(struct dir *dir, uint32_t size)
     for(i= 0; i < dir->len; i++ ){
 
         struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
+        get_iterateur(iterateur_courant); //sentinelle
         struct CelluleContact *cellule_courante = get_iterateur(iterateur_courant);
 
         while (cellule_courante != NULL){
