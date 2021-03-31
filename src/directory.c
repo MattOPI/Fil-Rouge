@@ -96,10 +96,8 @@ void dir_free(struct dir *dir)
         struct CelluleContact *cellule_courante = get_iterateur(iterateur_courant);
 
         while (cellule_courante != NULL){
-            struct CelluleContact *cellule_suppr = cellule_courante;
+            cellule_free(cellule_courante);
             cellule_courante = get_iterateur(iterateur_courant);
-
-            cellule_free(cellule_suppr);
         }
     }
     free(dir);
@@ -134,18 +132,19 @@ void dir_adjust_size(struct dir *dir)
 */
 void dir_resize(struct dir *dir, uint32_t size)
 {
-    struct dir *n_annuaire = dir_create(size);
+    struct dir *n_dir = dir_create(size);
     uint32_t i;
     for(i= 0; i < dir->len; i++ ){
 
         struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-        get_iterateur(iterateur_courant); //sentinelle
+        struct CelluleContact *sentinelle = get_iterateur(iterateur_courant); //sentinelle
+        cellule_free(sentinelle);
         struct CelluleContact *cellule_courante = get_iterateur(iterateur_courant);
 
         while (cellule_courante != NULL){
             const char *nom = get_nom(cellule_courante);
             const char *num = get_num(cellule_courante);
-            dir_insert(n_annuaire, nom, num);
+            dir_insert(n_dir, nom, num);
 
             struct CelluleContact *cellule_suppr = cellule_courante;
             cellule_courante = get_iterateur(iterateur_courant);
@@ -153,6 +152,6 @@ void dir_resize(struct dir *dir, uint32_t size)
             cellule_free(cellule_suppr);
         }
     }
-    dir_free(dir);
-    dir = n_annuaire;
+    free(dir);
+    dir = n_dir;
 }
