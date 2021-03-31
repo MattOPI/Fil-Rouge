@@ -126,16 +126,11 @@ void affiche_cel(struct CelluleContact *tete){
     }
 }
 
-void cellule_free(struct CelluleContact *tete){
-    struct CelluleContact *cellule_courante = tete->suivant;
-    while(cellule_courante != NULL){
-        struct CelluleContact *cellule_suppr= cellule_courante;
-        cellule_courante = cellule_courante->suivant;
-
-        contact_free(cellule_suppr->contact);
-        free(cellule_suppr);
+void cellule_free(struct CelluleContact *cellule){
+    if (cellule->contact != NULL){
+        contact_free(cellule->contact);
     }
-    free(tete);
+    free(cellule);
 }
 
 struct CelluleIterateur
@@ -152,6 +147,10 @@ struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *sentinelle)
 }
 
 struct CelluleContact *get_iterateur(struct CelluleIterateur *iterateur){
-    iterateur->curr_cell = iterateur->curr_cell->suivant;
-    return iterateur->curr_cell;
+    struct CelluleContact *cellule_res = iterateur->curr_cell;
+    if (iterateur->curr_cell != NULL){
+                iterateur->curr_cell = iterateur->curr_cell->suivant;
+    }
+    
+    return cellule_res;
 }

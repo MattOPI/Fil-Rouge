@@ -91,10 +91,18 @@ void dir_delete(struct dir *dir, const char *name)
 */
 void dir_free(struct dir *dir)
 {
-    uint32_t i;
     for(i= 0; i < dir->len; i++ ){
-        cellule_free(dir->T[i]);
-    }
+
+        struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
+        get_iterateur(iterateur_courant); //sentinelle
+        struct CelluleContact *cellule_courante = get_iterateur(iterateur_courant);
+
+        while (cellule_courante != NULL){
+            struct CelluleContact *cellule_suppr = cellule_courante;
+            cellule_courante = get_iterateur(iterateur_courant);
+
+            cellule_free(cellule_suppr);
+        }
     free(dir);
 }
 
@@ -117,7 +125,7 @@ void dir_adjust_size(struct dir *dir)
 {
     if (dir->occ > 75/100 * dir->len){
         dir_resize(dir, (dir->len)*2 );
-    } else if (dir->occ < 15/100 * dir-> len && dir->len > 20){
+    } else if ( (dir->occ < 15/100*(dir->len)) && (dir->len > 20)){
         dir_resize(dir, (dir->len)/2 );
     }
 }
