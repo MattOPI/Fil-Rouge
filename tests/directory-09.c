@@ -16,6 +16,7 @@ int main(void)
     dir_insert(dir, "Sergent Mayo", "06723236533");
     dir_insert(dir, "Adjudant Barbecue", "01723236533");
     dir_print(dir);
+    dir_resize(dir, 10);
     dir_delete(dir, "Adjudant Barbecue");
     dir_delete(dir, "Sergent Mayo");
     dir_print(dir);
