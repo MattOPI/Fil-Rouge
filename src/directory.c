@@ -29,7 +29,7 @@ struct dir *dir_create(uint32_t len)
     struct dir *annuaire = calloc(1, sizeof(struct dir));
     annuaire->len = len;
     annuaire->occ = 0;
-    annuaire->T = calloc(1, len*sizeof(struct  CelluleContact *));
+    annuaire->T = malloc(len*sizeof(struct  CelluleContact *));
 
     uint32_t i;
     for (i = 0 ; i < len; i++){
