@@ -91,6 +91,7 @@ void dir_delete(struct dir *dir, const char *name)
 */
 void dir_free(struct dir *dir)
 {
+    uint32_t i;
     for(i= 0; i < dir->len; i++ ){
 
         struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
@@ -103,6 +104,7 @@ void dir_free(struct dir *dir)
 
             cellule_free(cellule_suppr);
         }
+    }
     free(dir);
 }
 
