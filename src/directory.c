@@ -33,8 +33,7 @@ struct dir *dir_create(uint32_t len)
 
     uint32_t i;
     for (i = 0 ; i < len; i++){
-        struct Contact *c_sentinelle = nouveau_contact("sentinelle", "sentinelle", -1);
-        struct CelluleContact *sentinelle = nouvelle_cellule(NULL, c_sentinelle);
+        struct CelluleContact *sentinelle = nouvelle_cellule(NULL, NULL);
         annuaire->T[i] = sentinelle;
     }
     return annuaire;
@@ -95,7 +94,6 @@ void dir_free(struct dir *dir)
     for(i= 0; i < dir->len; i++ ){
 
         struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-        get_iterateur(iterateur_courant); //sentinelle
         struct CelluleContact *cellule_courante = get_iterateur(iterateur_courant);
 
         while (cellule_courante != NULL){
