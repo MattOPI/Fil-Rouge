@@ -36,11 +36,11 @@ void contact_free( struct Contact *contact){
 
 struct CelluleContact
 {
-        /* valeur*/
+    /* valeur*/
     struct Contact *contact;
 
     /* suivant */
-    struct CelluleContact *suivant; // voir pour la valeur par default
+    struct CelluleContact *suivant;
 };
 
 
@@ -135,6 +135,22 @@ void cellule_free(struct CelluleContact *tete){
         contact_free(cellule_suppr->contact);
         free(cellule_suppr);
     }
-    free(cellule_courante);
     free(tete);
+}
+
+struct CelluleIterateur
+{
+    struct CelluleContact *curr_cell;
+}
+
+struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *sentinelle){
+    struct CelluleIterateur *iterateur = calloc(1, sizeof(struct CelluleIterateur));
+    iterateur->curr_cell = sentinelle;
+
+    return iterateur;
+}
+
+struct CelluleContact *get_iterateur(struct CelluleIterateur *iterateur){
+    iterateur->curr_cell = iterateur->curr_cell->suivant;
+    return iterateur->curr_cell;
 }
