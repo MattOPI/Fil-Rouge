@@ -50,10 +50,9 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
     uint32_t h = hash(name);
     uint32_t indice = h % (dir->len);
     struct Contact *n_contact = nouveau_contact(name, num, h);
-    const char *res = insere(n_contact, dir->T[indice]);
-    /*
-    char *res;
-    strcpy(res, c_res);*/
+    const char *c_res = insere(n_contact, dir->T[indice]);
+
+    strcpy(char *res, c_res);
 
     if (res == NULL){
         dir->occ += 1;
@@ -61,7 +60,7 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
         return NULL;
 
     } else {
-      return res;
+        return res;
     }
 }
 

@@ -69,18 +69,20 @@ const char *insere(struct Contact *contact, struct CelluleContact *tete)
 
     while( cellule_courante->suivant != NULL){
         if( cellule_courante->suivant->contact->hash == contact->hash){
-            struct Contact *ancien_contact = cellule_courante->suivant->contact;
 
             n_cellule->suivant = cellule_courante->suivant->suivant;
-            cellule_courante->suivant = n_cellule;
+            res = cellule_courante->suivant->contact->numero;
 
-            res = ancien_contact->numero;
-            free(ancien_contact);
+            cellule_free(cellule_courante->suivant);
+
+            cellule_courante->suivant = n_cellule;
+            break;
         }
         cellule_courante = cellule_courante->suivant;
     }
-
-    cellule_courante->suivant = n_cellule;
+    if (res == NULL){
+        cellule_courante->suivant = n_cellule;
+    }
 
     return res;
 }
@@ -110,8 +112,11 @@ void supprime(const char *nom, struct CelluleContact *tete)
         if (cellule_courante->suivant->contact->hash  == h_nom){
             struct CelluleContact *cellule_suppr = cellule_courante->suivant;
             cellule_courante->suivant = cellule_courante->suivant->suivant;
-            free(cellule_suppr);
+
+            cellule_free(cellule_suppr);
+            break;
         }
+        cellule_courante = cellule_courante->suivant;
     }
 }
 
@@ -135,22 +140,22 @@ void cellule_free(struct CelluleContact *cellule){
 
 struct CelluleIterateur
 {
-    struct CelluleContact *curr_cell;
+    struct CelluleContact *curr_cellule;
 };
 
 struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *sentinelle)
 {
     struct CelluleIterateur *iterateur = calloc(1, sizeof(struct CelluleIterateur));
-    iterateur->curr_cell = sentinelle;
+    iterateur->curr_cellule = sentinelle;
 
     return iterateur;
 }
 
 struct CelluleContact *get_iterateur(struct CelluleIterateur *iterateur){
-    struct CelluleContact *cellule_res = iterateur->curr_cell;
-    if (iterateur->curr_cell != NULL){
-                iterateur->curr_cell = iterateur->curr_cell->suivant;
+    struct CelluleContact *cellule_res = iterateur->curr_cellule;
+    if (iterateur->curr_cellule != NULL){
+        iterateur->curr_cellule = iterateur->curr_cellule->suivant;
     }
-    
+
     return cellule_res;
 }
