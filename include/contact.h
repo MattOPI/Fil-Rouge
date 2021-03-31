@@ -32,4 +32,10 @@ void affiche_cel(struct CelluleContact *tete);
 
 void cellule_free(struct CelluleContact *tete);
 
+struct CelluleIterateur;
+
+struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *sentinelle);
+
+struct CelluleContact *get_iterateur(struct CelluleIterateur *iterateur);
+
 #endif /* _CONTACT_H_ */

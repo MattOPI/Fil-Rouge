@@ -141,9 +141,10 @@ void cellule_free(struct CelluleContact *tete){
 struct CelluleIterateur
 {
     struct CelluleContact *curr_cell;
-}
+};
 
-struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *sentinelle){
+struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *sentinelle)
+{
     struct CelluleIterateur *iterateur = calloc(1, sizeof(struct CelluleIterateur));
     iterateur->curr_cell = sentinelle;
 

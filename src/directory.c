@@ -15,7 +15,7 @@ struct dir
     uint32_t len;
 
     /* remplissage */
-    int occ;
+    uint32_t occ;
 
     /* tableau de pointeur représentant l'annuaire */
     struct CelluleContact **T;
@@ -41,10 +41,10 @@ struct dir *dir_create(uint32_t len)
 }
 
 /*
-    Insère un nouveau contact dans l"annuaire _dir_, construit à partir des nom et
-    numéro passés en paramètre. Si il existait déjà un contact du même nom, son
-    numéro est remplacé et la fonction retourne une copie de l"ancien numéro.
-    Sinon, la fonction retourne NULL.
+  Insère un nouveau contact dans l"annuaire _dir_, construit à partir des nom et
+  numéro passés en paramètre. Si il existait déjà un contact du même nom, son
+  numéro est remplacé et la fonction retourne une copie de l"ancien numéro.
+  Sinon, la fonction retourne NULL.
 */
 char *dir_insert(struct dir *dir, const char *name, const char *num)
 {
@@ -67,8 +67,8 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
 }
 
 /*
-Retourne le numéro associé au nom _name_ dans l"annuaire _dir_. Si aucun contact
-ne correspond, retourne NULL.
+  Retourne le numéro associé au nom _name_ dans l"annuaire _dir_. Si aucun contact
+  ne correspond, retourne NULL.
 */
 const char *dir_lookup_num(struct dir *dir, const char *name)
 {
@@ -77,8 +77,8 @@ const char *dir_lookup_num(struct dir *dir, const char *name)
 }
 
 /*
-Supprime le contact de nom _name_ de l"annuaire _dir_. Si aucun contact ne
-correspond, ne fait rien.
+  Supprime le contact de nom _name_ de l"annuaire _dir_. Si aucun contact ne
+  correspond, ne fait rien.
 */
 void dir_delete(struct dir *dir, const char *name)
 {
@@ -87,7 +87,7 @@ void dir_delete(struct dir *dir, const char *name)
 }
 
 /*
-Libère la mémoire associée à l"annuaire _dir_.
+  Libère la mémoire associée à l"annuaire _dir_.
 */
 void dir_free(struct dir *dir)
 {
@@ -99,7 +99,7 @@ void dir_free(struct dir *dir)
 }
 
 /*
-Affiche sur la sortie standard le contenu de l"annuaire _dir_.
+  Affiche sur la sortie standard le contenu de l"annuaire _dir_.
 */
 void dir_print(struct dir *dir)
 {
@@ -111,18 +111,19 @@ void dir_print(struct dir *dir)
 }
 
 /*
-Ajuste la taille de la table
+  Ajuste la taille de la table
 */
-void dir_adjust_size(struct dir *dir){
+void dir_adjust_size(struct dir *dir)
+{
     if (dir->occ > 75/100 * dir->len){
-        dir = dir_resize(dir, (dir->len)*2 );
+        dir_resize(dir, (dir->len)*2 );
     } else if (dir->occ < 15/100 * dir-> len && dir->len > 20){
-        dir = dir_resize(dir, (dir->len)/2 );
+        dir_resize(dir, (dir->len)/2 );
     }
 }
 
 /*
-Redimensionne la table de l'annuaire _dir_.
+  Redimensionne la table de l'annuaire _dir_.
 */
 void dir_resize(struct dir *dir, uint32_t size)
 {
@@ -145,5 +146,5 @@ void dir_resize(struct dir *dir, uint32_t size)
         }
     }
     dir_free(dir);
-    return n_annuaire;
+    dir = n_annuaire;
 }
