@@ -1,6 +1,9 @@
 #ifndef _CONTACT_H_
 #define _CONTACT_H_
 
+#include <stdint.h>
+
+
 /*
   Un contact représente une association {nom, numéro}.
 */
@@ -12,25 +15,31 @@ void affche_contact( struct Contact *contact);
 
 void contact_free( struct Contact *contact);
 
+const char *get_nom(struct Contact *contact);
+
+const char *get_num(struct Contact *contact);
+
+uint32_t get_hash(struct Contact *contact);
+
+
+
 /* TOUT DOUX: à compléter */
 /* Profitez de cette période sombre pour braver les interdits et rétablir le contact. */
 struct CelluleContact;
 
 struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct Contact *contact);
 
-const char *get_nom(struct CelluleContact *cellule);
+void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule);
 
-const char *get_num(struct CelluleContact *cellule);
+struct CelluleContact *supprime_suivant(struct CelluleContact *cellule);
 
-void cellule_free(struct CelluleContact *tete);
+struct Contact *get_contact(struct CelluleContact *cellule);
 
-const char *insere(struct Contact *, struct CelluleContact *);
+struct CelluleContact *get_suivant(struct CelluleContact *cellule);
 
-const char *recherche(const char *nom, struct CelluleContact *tete);
+void affiche_cel(struct CelluleContact *cellule);
 
-void supprime(const char *nom, struct CelluleContact *tete);
-
-void affiche_cel(struct CelluleContact *tete);
+void cellule_free(struct CelluleContact *cellule);
 
 
 
@@ -38,6 +47,10 @@ struct CelluleIterateur;
 
 struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *sentinelle);
 
-struct CelluleContact *get_iterateur(struct CelluleIterateur *iterateur);
+struct CelluleContact *get_current(struct CelluleIterateur *iterateur);
+
+struct CelluleContact *go_next(struct CelluleIterateur *iterateur);
+
+
 
 #endif /* _CONTACT_H_ */

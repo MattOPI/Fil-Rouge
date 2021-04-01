@@ -49,18 +49,31 @@ struct dir *dir_create(uint32_t len)
 char *dir_insert(struct dir *dir, const char *name, const char *num)
 {
     uint32_t h = hash(name);
-    uint32_t indice = h % (dir->len);
+    uint32_t indice = h % dir->len;
+    uint32_t non_present = 1;   // 'booléen' donnant l'incrémentation de l'occupation
+
     struct Contact *n_contact = nouveau_contact(name, num, h);
-    const char *res = insere(n_contact, dir->T[indice]);
+    struct CelluleContact *n_cellule = nouvelle_cellule(NULL, n_contact);
 
-    //char res[strlen(c_res)];
-    //strcpy(res, c_res);
+    struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[indice]);
+    struct CelluleContact *cellule_courante = get_current(iterateur_courant);
 
-    if (res == NULL){
-        dir->occ += 1;
-        //dir_adjust_size(dir);
+    while (get_suivant(cellule_courante) != NULL){
+        if (get_hash(get_contact(get_suivant(cellule_courante))) == h){
+
+            struct CelluleContact *cellule_suppr = supprime_suivant(cellule_courante);
+            const char *num = get_num(get_contact(cellule_suppr));
+
+            non_present = 0;
+            cellule_free(cellule_suppr);
+            break;
+        }
+        cellule_suivante = go_next(iterateur_courant);
     }
-    return res;
+
+    dir->occ += non_present;
+    insere_suivant(cellule_courante, n_cellule);
+    free(iterateur_courant);
 }
 
 /*
@@ -69,8 +82,19 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
 */
 const char *dir_lookup_num(struct dir *dir, const char *name)
 {
-    int indice = hash(name) % dir->len;
-    return recherche(name, dir->T[indice]);
+    uint32_t i = hash(name) % dir->len;
+
+    struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
+    struct CelluleContact *cellule_courante = get_current(iterateur_courant);
+
+    while (cellule_courante != NULL){
+        if (get_nom(get_contact(cellule_courante)) == name){
+            return get_num(get_contact(cellule_courante));
+        }
+        cellule_suivante = go_next(iterateur_courant);
+    }
+    free(iterateur_courant);
+    return NULL;
 }
 
 /*
@@ -79,8 +103,21 @@ const char *dir_lookup_num(struct dir *dir, const char *name)
 */
 void dir_delete(struct dir *dir, const char *name)
 {
-    int indice = hash(name) % dir->len;
-    supprime(name, dir->T[indice]);
+    uint32_t i = hash(name) % dir->len;
+
+    struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
+    struct CelluleContact *cellule_courante = get_current(iterateur_courant);
+
+    while (get_suivant(cellule_courante) != NULL){
+        if (get_nom(get_contact(get_suivant(cellule_courante))) == name){
+            cellule_free(supprime_suivant(cellule_courante));
+            break;
+            // on pourrais reajuster l'iterateur avec la valeur de retour de supprime
+            // mais on ne s'en soucis pas ici car l'on n'a plus besoin de parcourir la liste
+        }
+        cellule_suivante = go_next(iterateur_courant);
+    }
+    free(iterateur_courant);
 }
 
 /*
@@ -92,15 +129,14 @@ void dir_free(struct dir *dir)
     for(i= 0; i < dir->len; i++ ){
 
         struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-        struct CelluleContact *cellule_courante = get_iterateur(iterateur_courant);
+        struct CelluleContact *cellule_courante = get_current(iterateur_courant);
 
         while (cellule_courante != NULL){
             cellule_free(cellule_courante);
-            cellule_courante = get_iterateur(iterateur_courant);
+            cellule_courante = go_next(iterateur_courant);
         }
         free(iterateur_courant);
     }
-    free(dir);
 }
 
 /*
@@ -112,11 +148,11 @@ void dir_print(struct dir *dir)
     for(i= 0; i < dir->len; i++ ){
 
         struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-        struct CelluleContact *cellule_courante = get_iterateur(iterateur_courant);
+        struct CelluleContact *cellule_courante = go_next(iterateur_courant); //saut de la sentinelle
 
         while (cellule_courante != NULL){
             affiche_cel(cellule_courante);
-            cellule_courante = get_iterateur(iterateur_courant);
+            cellule_courante = go_next(iterateur_courant);
         }
         free(iterateur_courant);
     }
@@ -144,19 +180,18 @@ void dir_resize(struct dir *dir, uint32_t size)
     for(i= 0; i < dir->len; i++ ){
 
         struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-        struct CelluleContact *sentinelle = get_iterateur(iterateur_courant); //sentinelle
-        cellule_free(sentinelle);
-        struct CelluleContact *cellule_courante = get_iterateur(iterateur_courant);
 
-        while (cellule_courante != NULL){
-            const char *nom = get_nom(cellule_courante);
-            const char *num = get_num(cellule_courante);
-            dir_insert(n_dir, nom, num);
+        cellule_free(get_current(iterateur_courant)); //sentinelle
 
-            struct CelluleContact *cellule_suppr = cellule_courante;
-            cellule_courante = get_iterateur(iterateur_courant);
+        struct CelluleContact *cellule_courante = go_next(iterateur_courant);
+        while ( cellule_courante != NULL){
 
-            cellule_free(cellule_suppr);
+            struct Contact *contact = get_contact(cellule_courante);
+            dir_insert(n_dir,  get_nom(contact), get_num(contact));
+
+            cellule_free(cellule_courante);
+
+            cellule_courante = go_next(iterateur_courant);
         }
         free(iterateur_courant);
     }

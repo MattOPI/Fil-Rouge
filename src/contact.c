@@ -25,14 +25,35 @@ struct Contact *nouveau_contact(const char *nom, const char *numero, uint32_t ha
     return n_contact;
 }
 
-
-void affiche_contact( struct Contact *contact){
+void affiche_contact( struct Contact *contact)
+{
     printf("(%s, %s)", contact->nom, contact->numero);
 }
 
-void contact_free( struct Contact *contact){
+void contact_free( struct Contact *contact)
+{
     free(contact);
 }
+
+const char *get_nom(struct Contact *contact)
+{
+    return contact->nom;
+}
+
+const char *get_num(struct Contact *contact)
+{
+    return contact->numero;
+}
+
+uint32_t get_hash(struct Contact *contact)
+{
+    return contact->hash;
+}
+
+
+
+
+
 
 struct CelluleContact
 {
@@ -52,77 +73,37 @@ struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct C
     return n_cellule;
 }
 
-const char *get_nom(struct CelluleContact *cellule){
-    return cellule->contact->nom;
-}
-
-const char *get_num(struct CelluleContact *cellule){
-    return cellule->contact->numero;
-}
-
-
-const char *insere(struct Contact *contact, struct CelluleContact *tete)
+void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule )
 {
-    struct CelluleContact *cellule_courante = tete;
-    struct CelluleContact *n_cellule = nouvelle_cellule(NULL, contact);
-    const char *res = NULL;
-
-    while( cellule_courante->suivant != NULL){
-        if( cellule_courante->suivant->contact->hash == contact->hash){
-
-            n_cellule->suivant = cellule_courante->suivant->suivant;
-            res = cellule_courante->suivant->contact->numero;
-
-            cellule_free(cellule_courante->suivant);
-
-            cellule_courante->suivant = n_cellule;
-            break;
-        }
-        cellule_courante = cellule_courante->suivant;
-    }
-    if (res == NULL){
-        cellule_courante->suivant = n_cellule;
-    }
-
-    return res;
+    n_cellule->suivant = cellule->suivant;
+    cellule->suivant = n_cellule;
 }
 
-
-const char *recherche(const char *nom, struct CelluleContact *tete)
+/*
+    supprime la cellule suivante et renvoie la nouvelle cellule suivante
+*/
+struct CelluleContact *supprime_suivant(struct CelluleContact *cellule)
 {
-    struct CelluleContact *cellule_courante = tete->suivant;
-    uint32_t h_nom = hash(nom);
+    struct CelluleContact *cellule_suppr = cellule->suivant;
+    cellule->suivant = cellule->suivant->suivant;
 
-    while ( cellule_courante != NULL){
-        if (cellule_courante->contact->hash == h_nom){
-            return cellule_courante->contact->numero;
-        }
-        cellule_courante = cellule_courante->suivant;
-    }
-    return NULL;
+    cellule_free(cellule_suppr);
+    return cellule->suivant;
 }
 
-
-void supprime(const char *nom, struct CelluleContact *tete)
+struct Contact *get_contact(struct CelluleContact *cellule)
 {
-    struct CelluleContact *cellule_courante = tete;
-    uint32_t h_nom = hash(nom);
-
-    while( cellule_courante->suivant != NULL){
-        if (cellule_courante->suivant->contact->hash  == h_nom){
-            struct CelluleContact *cellule_suppr = cellule_courante->suivant;
-            cellule_courante->suivant = cellule_courante->suivant->suivant;
-
-            cellule_free(cellule_suppr);
-            break;
-        }
-        cellule_courante = cellule_courante->suivant;
-    }
+    return cellule->contact;
 }
 
-void affiche_cel(struct CelluleContact *tete){
-        if (tete->contact != NULL){
-            affiche_contact(tete->contact);
+struct CelluleContact *get_suivant(struct CelluleContact *cellule)
+{
+    return cellule->suivant;
+}
+
+void affiche_cel(struct CelluleContact *cellule){
+        if (cellule->contact != NULL){
+            affiche_contact(cellule->contact);
         }
         printf("\n");
 }
@@ -134,24 +115,42 @@ void cellule_free(struct CelluleContact *cellule){
     free(cellule);
 }
 
+
+/*
+    Structure d'itérateur et fonctions associées
+*/
+
+
 struct CelluleIterateur
 {
-    struct CelluleContact *curr_cellule;
+    struct CelluleContact *cellule_courante;
+
+    struct CelluleContact *cellule_suivante;
 };
 
-struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *sentinelle)
+struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *tete)
 {
     struct CelluleIterateur *iterateur = malloc(sizeof(struct CelluleIterateur));
-    iterateur->curr_cellule = sentinelle;
+    iterateur->cellule_courante = tete;
+
+    if (tete != NULL){
+        iterateur->cellule_suivante = tete->suivant;
+    }
 
     return iterateur;
 }
 
-struct CelluleContact *get_iterateur(struct CelluleIterateur *iterateur){
-    struct CelluleContact *cellule_res = iterateur->curr_cellule;
-    if (iterateur->curr_cellule != NULL){
-        iterateur->curr_cellule = iterateur->curr_cellule->suivant;
-    }
+struct CelluleContact *get_current(struct CelluleIterateur *iterateur)
+{
+    return iterateur->cellule_courante;
+}
 
-    return cellule_res;
+struct CelluleContact *go_next(struct CelluleIterateur *iterateur)
+{
+    iterateur->cellule_courante = iterateur->cellule_suivante;
+
+    if (iterateur->cellule_suivante != NULL){
+        iterateur->cellule_suivante = iterateur->cellule_suivante->suivant;
+    }
+    return  iterateur->cellule_courante;
 }
