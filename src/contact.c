@@ -17,7 +17,7 @@ struct Contact   // comment peut-on rentrer des valeurs des la contruction du ty
 
 struct Contact *nouveau_contact(const char *nom, const char *numero, uint32_t hash)
 {
-    struct Contact *n_contact = calloc(1, sizeof( struct Contact));
+    struct Contact *n_contact = malloc(sizeof( struct Contact));
     n_contact->nom = nom;
     n_contact->hash = hash;
     n_contact->numero = numero;
@@ -46,7 +46,7 @@ struct CelluleContact
 
 struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct Contact *contact)
 {
-    struct CelluleContact *n_cellule = calloc(1, sizeof( struct CelluleContact));
+    struct CelluleContact *n_cellule = malloc(sizeof( struct CelluleContact));
     n_cellule->contact = contact;
     n_cellule->suivant = suivant;
     return n_cellule;
@@ -121,19 +121,15 @@ void supprime(const char *nom, struct CelluleContact *tete)
 }
 
 void affiche_cel(struct CelluleContact *tete){
-    struct CelluleContact *cellule_courante = tete->suivant;
-
-    while( cellule_courante != NULL){
-        affiche_contact(cellule_courante->contact);
+        if (tete->contact != NULL){
+            affiche_contact(tete->contact);
+        }
         printf("\n");
-
-        cellule_courante = cellule_courante->suivant;
-    }
 }
 
 void cellule_free(struct CelluleContact *cellule){
     if (cellule->contact != NULL){
-        contact_free(cellule->contact);
+        free(cellule->contact);
     }
     free(cellule);
 }
@@ -145,7 +141,7 @@ struct CelluleIterateur
 
 struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *sentinelle)
 {
-    struct CelluleIterateur *iterateur = calloc(1, sizeof(struct CelluleIterateur));
+    struct CelluleIterateur *iterateur = malloc(sizeof(struct CelluleIterateur));
     iterateur->curr_cellule = sentinelle;
 
     return iterateur;

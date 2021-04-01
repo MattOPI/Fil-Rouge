@@ -22,6 +22,8 @@ const char *get_nom(struct CelluleContact *cellule);
 
 const char *get_num(struct CelluleContact *cellule);
 
+void cellule_free(struct CelluleContact *tete);
+
 const char *insere(struct Contact *, struct CelluleContact *);
 
 const char *recherche(const char *nom, struct CelluleContact *tete);
@@ -30,7 +32,7 @@ void supprime(const char *nom, struct CelluleContact *tete);
 
 void affiche_cel(struct CelluleContact *tete);
 
-void cellule_free(struct CelluleContact *tete);
+
 
 struct CelluleIterateur;
 

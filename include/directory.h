@@ -47,7 +47,7 @@ extern void dir_print(struct dir *dir);
 /*
   Ajuste la taille de la table
 */
-void dir_adjust_size(struct dir *dir);
+extern void dir_adjust_size(struct dir *dir);
 
 /*
   Redimensionne la table de l'annuaire _dir_.
