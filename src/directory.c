@@ -62,7 +62,7 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
     while (get_suivant(cellule_courante) != NULL){
         if (get_hash(get_contact(get_suivant(cellule_courante))) == h){
 
-            numero = get_num(get_contact(get_suivant(cellule_courante))); // mettre le strcpy
+            numero = copy_num(get_num(get_contact(get_suivant(cellule_courante)))); // mettre le strcpy
             supprime_suivant(cellule_courante);
 
             non_present = 0;

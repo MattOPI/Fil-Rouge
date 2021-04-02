@@ -19,12 +19,13 @@ const char *get_num(struct Contact *contact);
 
 uint32_t get_hash(struct Contact *contact);
 
-// Fonctions
-
 // Retours
 void affiche_contact( struct Contact *contact);
 
 void contact_free( struct Contact *contact);
+
+// Fonctions
+char *copy_num(const char *numero);
 
 
 /*
@@ -40,15 +41,15 @@ struct Contact *get_contact(struct CelluleContact *cellule);
 
 struct CelluleContact *get_suivant(struct CelluleContact *cellule);
 
-// Fonctions
-void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule);
-
-void supprime_suivant(struct CelluleContact *cellule);
-
 // Retours
 void affiche_cel(struct CelluleContact *cellule);
 
 void cellule_free(struct CelluleContact *cellule);
+
+// Fonctions
+void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule);
+
+void supprime_suivant(struct CelluleContact *cellule);
 
 
 
@@ -63,11 +64,11 @@ struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *sentinelle);
 // Gets
 struct CelluleContact *get_current(struct CelluleIterateur *iterateur);
 
+// Retours
+void iterateur_free(struct CelluleIterateur *iterateur);
+
 // Fonctions
 struct CelluleContact *go_next(struct CelluleIterateur *iterateur);
-
-// Retour
-void iterateur_free(struct CelluleIterateur *iterateur);
 
 
 #endif /* _CONTACT_H_ */

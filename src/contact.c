@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 
 #include <hash.h>
 
@@ -45,8 +46,6 @@ uint32_t get_hash(struct Contact *contact)
     return contact->hash;
 }
 
-// Fonctions
-
 // Retours
 void affiche_contact( struct Contact *contact)
 {
@@ -57,6 +56,19 @@ void contact_free( struct Contact *contact)
 {
     free(contact);
 }
+
+// Fonctions
+char *copy_num(const char *numero)
+{
+    char *num = NULL;
+
+    uint32_t i;
+    for ( i = 0; i<strlen(numero); i++){
+        num[i] = numero[i];
+    }
+    return num;
+}
+
 
 
 
@@ -95,21 +107,6 @@ struct CelluleContact *get_suivant(struct CelluleContact *cellule)
     return cellule->suivant;
 }
 
-// Fonctions
-void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule )
-{
-    n_cellule->suivant = cellule->suivant;
-    cellule->suivant = n_cellule;
-}
-
-void supprime_suivant(struct CelluleContact *cellule)
-{
-    struct CelluleContact *cellule_suppr = cellule->suivant;
-    cellule->suivant = cellule->suivant->suivant;
-
-    cellule_free(cellule_suppr);
-}
-
 // Retours
 void affiche_cel(struct CelluleContact *cellule){
         if (cellule->contact != NULL){
@@ -123,6 +120,21 @@ void cellule_free(struct CelluleContact *cellule){
         contact_free(cellule->contact);
     }
     free(cellule);
+}
+
+// Fonctions
+void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule )
+{
+    n_cellule->suivant = cellule->suivant;
+    cellule->suivant = n_cellule;
+}
+
+void supprime_suivant(struct CelluleContact *cellule)
+{
+    struct CelluleContact *cellule_suppr = cellule->suivant;
+    cellule->suivant = cellule->suivant->suivant;
+
+    cellule_free(cellule_suppr);
 }
 
 
@@ -155,6 +167,12 @@ struct CelluleContact *get_current(struct CelluleIterateur *iterateur)
     return iterateur->cellule_courante;
 }
 
+// Retours
+void iterateur_free(struct CelluleIterateur *iterateur)
+{
+    free(iterateur);
+}
+
 // Fonctions
 struct CelluleContact *go_next(struct CelluleIterateur *iterateur)
 {
@@ -164,10 +182,4 @@ struct CelluleContact *go_next(struct CelluleIterateur *iterateur)
         iterateur->cellule_suivante = iterateur->cellule_suivante->suivant;
     }
     return  iterateur->cellule_courante;
-}
-
-// Retours
-void iterateur_free(struct CelluleIterateur *iterateur)
-{
-    free(iterateur);
 }
