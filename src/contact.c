@@ -174,8 +174,5 @@ void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cel
 
 void supprime_suivant(struct CelluleContact *cellule)
 {
-    struct CelluleContact *cellule_suppr = cellule->suivant;
-    cellule->suivant = cellule->suivant->suivant;
-
-    cellule_free(cellule_suppr);
+    cellule->suivant = cellule_free(cellule->suivant);
 }
