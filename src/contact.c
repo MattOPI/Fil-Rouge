@@ -129,10 +129,10 @@ struct CelluleContact *get_suivant(struct CelluleContact *cellule)
     -----------------Retours-------------------
 */
 void affiche_cel(struct CelluleContact *cellule){
-        if (cellule->contact != NULL){
-            affiche_contact(cellule->contact);
-        }
-        printf("\n");
+    if (cellule->contact != NULL){
+        affiche_contact(cellule->contact);
+    }
+    printf("\n");
 }
 
 /*
