@@ -70,35 +70,3 @@ void cellule_array_free(struct CelluleContact **T, uint32_t len);
 void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule);
 
 void supprime_suivant(struct CelluleContact *cellule);
-
-
-
-
-
-/*
-  Un itérateur est caractérisé par une référence vers une cellule et vers son suivant
-*/
-struct CelluleIterateur;
-
-/*
-  -----------------Init---------------------
-*/
-struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *sentinelle);
-
-/*
-  -----------------Gets----------------------
-*/
-struct CelluleContact *get_current(struct CelluleIterateur *iterateur);
-
-/*
-  -----------------Retours-------------------
-*/
-void iterateur_free(struct CelluleIterateur *iterateur);
-
-/*
-  -----------------Fonctions-----------------
-*/
-struct CelluleContact *go_next(struct CelluleIterateur *iterateur);
-
-
-#endif /* _CONTACT_H_ */

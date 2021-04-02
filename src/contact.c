@@ -136,11 +136,13 @@ void affiche_cel(struct CelluleContact *cellule){
         printf("\n");
 }
 
-void cellule_free(struct CelluleContact *cellule){
+struct CelluleContact *cellule_free(struct CelluleContact *cellule){
     if (cellule->contact != NULL){
         contact_free(cellule->contact);
     }
     free(cellule);
+
+    return cellule->suivant;
 }
 
 void cellule_array_free(struct CelluleContact **T, uint32_t len)
@@ -150,9 +152,7 @@ void cellule_array_free(struct CelluleContact **T, uint32_t len)
         struct CelluleContact *cellule_courante = T[i];
 
         while (cellule_courante != NULL){
-            struct CelluleContact *cellule_suppr = cellule_courante;
-            cellule_courante = cellule_courante->suivant;
-            cellule_free(cellule_suppr);
+            cellule_courante = cellule_free(cellule_courante);
         }
     }
     free(T);
@@ -174,63 +174,4 @@ void supprime_suivant(struct CelluleContact *cellule)
     cellule->suivant = cellule->suivant->suivant;
 
     cellule_free(cellule_suppr);
-}
-
-
-/*
-    Un itérateur est caractérisé par une référence vers une cellule et vers son suivant
-*/
-struct CelluleIterateur
-{
-    struct CelluleContact *cellule_courante;
-
-    struct CelluleContact *cellule_suivante;
-};
-
-
-/*
-    -----------------Init---------------------
-*/
-struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *tete)
-{
-    struct CelluleIterateur *iterateur = malloc(sizeof(struct CelluleIterateur));
-    iterateur->cellule_courante = tete;
-
-    if (tete != NULL){
-        iterateur->cellule_suivante = tete->suivant;
-    }
-
-    return iterateur;
-}
-
-
-/*
-    -----------------Gets----------------------
-*/
-struct CelluleContact *get_current(struct CelluleIterateur *iterateur)
-{
-    return iterateur->cellule_courante;
-}
-
-
-/*
-    -----------------Retours-------------------
-*/
-void iterateur_free(struct CelluleIterateur *iterateur)
-{
-    free(iterateur);
-}
-
-
-/*
-    -----------------Fonctions-----------------
-*/
-struct CelluleContact *go_next(struct CelluleIterateur *iterateur)
-{
-    iterateur->cellule_courante = iterateur->cellule_suivante;
-
-    if (iterateur->cellule_suivante != NULL){
-        iterateur->cellule_suivante = iterateur->cellule_suivante->suivant;
-    }
-    return  iterateur->cellule_courante;
 }

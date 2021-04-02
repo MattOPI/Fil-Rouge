@@ -83,14 +83,13 @@ void dir_print(struct dir *dir)
     uint32_t i;
     for(i= 0; i < dir->len; i++ ){
 
-        struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-        struct CelluleContact *cellule_courante = go_next(iterateur_courant); /*saut de la sentinelle*/
+        struct CelluleContact *cellule_courante = dir->T[i];
+        cellule_courante = get_suivant(cellule_courante);  /*saut de la sentinelle*/
 
         while (cellule_courante != NULL){
             affiche_cel(cellule_courante);
-            cellule_courante = go_next(iterateur_courant);
+            cellule_courante = get_suivant(cellule_courante)
         }
-        iterateur_free(iterateur_courant);
     }
 }
 
@@ -116,8 +115,7 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
     struct Contact *n_contact = nouveau_contact(name, num, h);
     struct CelluleContact *n_cellule = nouvelle_cellule(NULL, n_contact);
 
-    struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[indice]);
-    struct CelluleContact *cellule_courante = get_current(iterateur_courant);
+    struct CelluleContact *cellule_courante = dir->T[indice];
 
     while (get_suivant(cellule_courante) != NULL){
         if (get_hash(get_contact(get_suivant(cellule_courante))) == h){
@@ -128,10 +126,8 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
             non_present = 0;
             break;
         }
-        cellule_courante = go_next(iterateur_courant);
+        cellule_courante = get_suivant(cellule_courante);
     }
-    iterateur_free(iterateur_courant);
-
     insere_suivant(cellule_courante, n_cellule);
     dir->occ += non_present;
     /* dir_adjust_size(dir);*/     /* à ajouter ici ou à faire manuellement*/
@@ -149,17 +145,16 @@ const char *dir_lookup_num(struct dir *dir, const char *name)
     uint32_t i =  h % dir->len;
     const char *num = NULL;
 
-    struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-    struct CelluleContact *cellule_courante = go_next(iterateur_courant); /*saut de la sentinelle*/
+    struct CelluleContact *cellule_courante = dir->T[i];
+    cellule_courante = get_suivant(cellule_courante);  /*saut de la sentinelle*/
 
     while (cellule_courante != NULL){
         if (get_hash(get_contact(cellule_courante)) == h){
             num = get_num(get_contact(cellule_courante));
             break;
         }
-        cellule_courante = go_next(iterateur_courant);
+        cellule_courante = get_suivant(cellule_courante);
     }
-    iterateur_free(iterateur_courant);
     return num;
 }
 
@@ -171,19 +166,15 @@ void dir_delete(struct dir *dir, const char *name)
 {
     uint32_t i = hash(name) % dir->len;
 
-    struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-    struct CelluleContact *cellule_courante = get_current(iterateur_courant);
+    struct CelluleContact *cellule_courante = dir->T[i];
 
     while (get_suivant(cellule_courante) != NULL){
         if (get_nom(get_contact(get_suivant(cellule_courante))) == name){
             supprime_suivant(cellule_courante);
             break;
-            /* on pourrais reajuster l'iterateur
-            mais on ne s'en soucis pas ici car l'on n'a plus besoin de parcourir la liste*/
         }
-        cellule_courante = go_next(iterateur_courant);
+        cellule_courante = get_suivant(cellule_courante);
     }
-    iterateur_free(iterateur_courant);
 }
 
 
@@ -209,21 +200,16 @@ void dir_resize(struct dir *dir, uint32_t size)
     uint32_t i;
     for(i= 0; i < dir->len; i++ ){
 
-        struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
+        struct CelluleContact *cellule_courante = dir->T[i];
+        cellule_courante = cellule_free(cellule_courante); /*sentinelle*/
 
-        cellule_free(get_current(iterateur_courant)); /*sentinelle*/
-
-        struct CelluleContact *cellule_courante = go_next(iterateur_courant);
         while ( cellule_courante != NULL){
 
             struct Contact *contact = get_contact(cellule_courante);
             dir_insert(n_dir,  get_nom(contact), get_num(contact));
 
-            cellule_free(cellule_courante);
-
-            cellule_courante = go_next(iterateur_courant);
+            cellule_courante = cellule_free(cellule_courante);
         }
-        iterateur_free(iterateur_courant);
     }
     free(dir->T);
     dir->len = size;
