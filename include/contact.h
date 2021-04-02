@@ -9,23 +9,33 @@
 */
 struct Contact;
 
-// -----------------Init---------------------
+/*
+  -----------------Init---------------------
+*/
 struct Contact *nouveau_contact(const char *nom, const char *numero, uint32_t hash);
 
-// -----------------Gets----------------------
+/*
+  -----------------Gets----------------------
+*/
 const char *get_nom(struct Contact *contact);
 
 const char *get_num(struct Contact *contact);
 
 uint32_t get_hash(struct Contact *contact);
 
-// -----------------Retours-------------------
+/*
+  -----------------Retours-------------------
+*/
 void affiche_contact( struct Contact *contact);
 
 void contact_free( struct Contact *contact);
 
-// -----------------Fonctions-----------------
+/*
+  -----------------Fonctions-----------------
+*/
 char *str_copy(const char *chaine);
+
+
 
 
 /*
@@ -33,25 +43,35 @@ char *str_copy(const char *chaine);
 */
 struct CelluleContact;
 
-// -----------------Init---------------------
+/*
+  -----------------Init---------------------
+*/
 struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct Contact *contact);
 
-// -----------------Gets----------------------
+/*
+  -----------------Gets----------------------
+*/
 struct Contact *get_contact(struct CelluleContact *cellule);
 
 struct CelluleContact *get_suivant(struct CelluleContact *cellule);
 
-// -----------------Retours-------------------
+/*
+  -----------------Retours-------------------
+*/
 void affiche_cel(struct CelluleContact *cellule);
 
 void cellule_free(struct CelluleContact *cellule);
 
 void cellule_array_free(struct CelluleContact **T, uint32_t len);
 
-// -----------------Fonctions-----------------
+/*
+  -----------------Fonctions-----------------
+*/
 void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule);
 
 void supprime_suivant(struct CelluleContact *cellule);
+
+
 
 
 
@@ -60,16 +80,24 @@ void supprime_suivant(struct CelluleContact *cellule);
 */
 struct CelluleIterateur;
 
-// -----------------Init---------------------
+/*
+  -----------------Init---------------------
+*/
 struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *sentinelle);
 
-// -----------------Gets----------------------
+/*
+  -----------------Gets----------------------
+*/
 struct CelluleContact *get_current(struct CelluleIterateur *iterateur);
 
-// -----------------Retours-------------------
+/*
+  -----------------Retours-------------------
+*/
 void iterateur_free(struct CelluleIterateur *iterateur);
 
-// -----------------Fonctions-----------------
+/*
+  -----------------Fonctions-----------------
+*/
 struct CelluleContact *go_next(struct CelluleIterateur *iterateur);
 
 

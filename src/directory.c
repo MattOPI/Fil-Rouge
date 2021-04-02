@@ -6,8 +6,8 @@
 #include <contact.h>
 #include <hash.h>
 /*
-    Structure de données représentant un annuaire.
-    Son contenu est détaillé dans directory.c. rien changé
+  Structure de données représentant un annuaire.
+  Son contenu est détaillé dans directory.c. rien changé
 */
 struct dir
 {
@@ -21,9 +21,12 @@ struct dir
     struct CelluleContact **T;
 };
 
-// -----------------Init---------------------
 /*
-Crée un nouvel annuaire contenant _len_ listes vides.
+  -----------------Init---------------------
+*/
+
+/*
+  Crée un nouvel annuaire contenant _len_ listes vides.
 */
 struct dir *dir_create(uint32_t len)
 {
@@ -34,14 +37,16 @@ struct dir *dir_create(uint32_t len)
 
     uint32_t i;
     for (i = 0 ; i < len; i++){
-        //struct Contact *c_sentinelle = nouveau_contact("sentinelle", "sentinelle", hash("sentienelle"));
         struct CelluleContact *sentinelle = nouvelle_cellule(NULL, NULL);
         annuaire->T[i] = sentinelle;
     }
     return annuaire;
 }
 
-// -----------------Gets----------------------
+/*
+  -----------------Gets----------------------
+*/
+
 uint32_t get_length(struct dir *annuaire)
 {
     return annuaire->len;
@@ -57,7 +62,9 @@ struct CelluleContact **get_array(struct dir *annuaire)
     return annuaire->T;
 }
 
-// -----------------Retours-------------------
+/*
+  -----------------Retours-------------------
+*/
 
 /*
   Libère la mémoire associée à l"annuaire _dir_.
@@ -77,7 +84,7 @@ void dir_print(struct dir *dir)
     for(i= 0; i < dir->len; i++ ){
 
         struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-        struct CelluleContact *cellule_courante = go_next(iterateur_courant); //saut de la sentinelle
+        struct CelluleContact *cellule_courante = go_next(iterateur_courant); /*saut de la sentinelle*/
 
         while (cellule_courante != NULL){
             affiche_cel(cellule_courante);
@@ -89,7 +96,10 @@ void dir_print(struct dir *dir)
 
 
 
-// -----------------Fonctions-----------------
+/*
+  -----------------Fonctions-----------------
+*/
+
 /*
   Insère un nouveau contact dans l"annuaire _dir_, construit à partir des nom et
   numéro passés en paramètre. Si il existait déjà un contact du même nom, son
@@ -100,7 +110,7 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
 {
     uint32_t h = hash(name);
     uint32_t indice = h % dir->len;
-    uint32_t non_present = 1;   // 'booléen' donnant l'incrémentation de l'occupation
+    uint32_t non_present = 1;   /* 'booléen' donnant l'incrémentation de l'occupation */
     char *numero = NULL;
 
     struct Contact *n_contact = nouveau_contact(name, num, h);
@@ -112,7 +122,7 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
     while (get_suivant(cellule_courante) != NULL){
         if (get_hash(get_contact(get_suivant(cellule_courante))) == h){
 
-            numero = str_copy(get_num(get_contact(get_suivant(cellule_courante)))); // mettre le strcpy
+            numero = str_copy(get_num(get_contact(get_suivant(cellule_courante))));
             supprime_suivant(cellule_courante);
 
             non_present = 0;
@@ -122,8 +132,9 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
     }
     iterateur_free(iterateur_courant);
 
-    dir->occ += non_present;
     insere_suivant(cellule_courante, n_cellule);
+    dir->occ += non_present;
+    /* dir_adjust_size(dir);*/     /* à ajouter ici ou à faire manuellement*/
 
     return numero;
 }
@@ -139,7 +150,7 @@ const char *dir_lookup_num(struct dir *dir, const char *name)
     const char *num = NULL;
 
     struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-    struct CelluleContact *cellule_courante = go_next(iterateur_courant); //saut de la sentinelle
+    struct CelluleContact *cellule_courante = go_next(iterateur_courant); /*saut de la sentinelle*/
 
     while (cellule_courante != NULL){
         if (get_hash(get_contact(cellule_courante)) == h){
@@ -167,8 +178,8 @@ void dir_delete(struct dir *dir, const char *name)
         if (get_nom(get_contact(get_suivant(cellule_courante))) == name){
             supprime_suivant(cellule_courante);
             break;
-            // on pourrais reajuster l'iterateur
-            // mais on ne s'en soucis pas ici car l'on n'a plus besoin de parcourir la liste
+            /* on pourrais reajuster l'iterateur
+            mais on ne s'en soucis pas ici car l'on n'a plus besoin de parcourir la liste*/
         }
         cellule_courante = go_next(iterateur_courant);
     }
@@ -200,7 +211,7 @@ void dir_resize(struct dir *dir, uint32_t size)
 
         struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
 
-        cellule_free(get_current(iterateur_courant)); //sentinelle
+        cellule_free(get_current(iterateur_courant)); /*sentinelle*/
 
         struct CelluleContact *cellule_courante = go_next(iterateur_courant);
         while ( cellule_courante != NULL){
@@ -214,7 +225,6 @@ void dir_resize(struct dir *dir, uint32_t size)
         }
         iterateur_free(iterateur_courant);
     }
-    //cellule_array_free(dir->T, dir->len);
     free(dir->T);
     dir->len = size;
     dir->T = n_dir->T;

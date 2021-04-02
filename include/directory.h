@@ -9,20 +9,31 @@
 */
 struct dir;
 
-// -----------------Init---------------------
+/*
+  -----------------Init---------------------
+*/
+
 /*
   Crée un nouvel annuaire contenant _len_ listes vides.
 */
 extern struct dir *dir_create(uint32_t len);
 
-// -----------------Gets----------------------
+
+/*
+  -----------------Gets----------------------
+*/
+
 uint32_t get_lenght(struct dir *annuaire);
 
 uint32_t get_occupation(struct dir *annuaire);
 
 struct CelluleContact **get_array(struct dir *annuaire);
 
-// -----------------Retours-------------------
+
+/*
+  -----------------Retours-------------------
+*/
+
 /*
   Libère la mémoire associée à l'annuaire _dir_.
 */
@@ -34,9 +45,10 @@ extern void dir_free(struct dir *dir);
 extern void dir_print(struct dir *dir);
 
 
+/*
+  -----------------Fonctions-----------------
+*/
 
-
-// -----------------Fonctions-----------------
 /*
   Insère un nouveau contact dans l'annuaire _dir_, construit à partir des nom et
   numéro passés en paramètre. Si il existait déjà un contact du même nom, son

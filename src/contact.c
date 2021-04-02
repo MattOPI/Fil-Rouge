@@ -19,7 +19,10 @@ struct Contact
 
 };
 
-// -----------------Init---------------------
+
+/*
+    -----------------Init---------------------
+*/
 struct Contact *nouveau_contact(const char *nom, const char *numero, uint32_t hash)
 {
     struct Contact *n_contact = malloc(sizeof( struct Contact));
@@ -30,7 +33,10 @@ struct Contact *nouveau_contact(const char *nom, const char *numero, uint32_t ha
     return n_contact;
 }
 
-// -----------------Gets----------------------
+
+/*
+    -----------------Gets----------------------
+*/
 const char *get_nom(struct Contact *contact)
 {
     return contact->nom;
@@ -46,7 +52,10 @@ uint32_t get_hash(struct Contact *contact)
     return contact->hash;
 }
 
-// -----------------Retours-------------------
+
+/*
+    -----------------Retours-------------------
+*/
 void affiche_contact( struct Contact *contact)
 {
     printf("(%s, %s)", contact->nom, contact->numero);
@@ -57,7 +66,10 @@ void contact_free( struct Contact *contact)
     free(contact);
 }
 
-// -----------------Fonctions-----------------
+
+/*
+    -----------------Fonctions-----------------
+*/
 char *str_copy(const char *chaine)
 {
     char *ch = (char *) malloc(strlen(chaine));
@@ -87,7 +99,10 @@ struct CelluleContact
     struct CelluleContact *suivant;
 };
 
-// -----------------Init---------------------
+
+/*
+    -----------------Init---------------------
+*/
 struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct Contact *contact)
 {
     struct CelluleContact *n_cellule = malloc(sizeof( struct CelluleContact));
@@ -96,7 +111,10 @@ struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct C
     return n_cellule;
 }
 
-// -----------------Gets----------------------
+
+/*
+    -----------------Gets----------------------
+*/
 struct Contact *get_contact(struct CelluleContact *cellule)
 {
     return cellule->contact;
@@ -107,7 +125,10 @@ struct CelluleContact *get_suivant(struct CelluleContact *cellule)
     return cellule->suivant;
 }
 
-// -----------------Retours-------------------
+
+/*
+    -----------------Retours-------------------
+*/
 void affiche_cel(struct CelluleContact *cellule){
         if (cellule->contact != NULL){
             affiche_contact(cellule->contact);
@@ -137,7 +158,10 @@ void cellule_array_free(struct CelluleContact **T, uint32_t len)
     free(T);
 }
 
-// -----------------Fonctions-----------------
+
+/*
+    -----------------Fonctions-----------------
+*/
 void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule )
 {
     n_cellule->suivant = cellule->suivant;
@@ -163,7 +187,10 @@ struct CelluleIterateur
     struct CelluleContact *cellule_suivante;
 };
 
-// -----------------Init---------------------
+
+/*
+    -----------------Init---------------------
+*/
 struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *tete)
 {
     struct CelluleIterateur *iterateur = malloc(sizeof(struct CelluleIterateur));
@@ -176,19 +203,28 @@ struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *tete)
     return iterateur;
 }
 
-// -----------------Gets----------------------
+
+/*
+    -----------------Gets----------------------
+*/
 struct CelluleContact *get_current(struct CelluleIterateur *iterateur)
 {
     return iterateur->cellule_courante;
 }
 
-// -----------------Retours-------------------
+
+/*
+    -----------------Retours-------------------
+*/
 void iterateur_free(struct CelluleIterateur *iterateur)
 {
     free(iterateur);
 }
 
-// -----------------Fonctions-----------------
+
+/*
+    -----------------Fonctions-----------------
+*/
 struct CelluleContact *go_next(struct CelluleIterateur *iterateur)
 {
     iterateur->cellule_courante = iterateur->cellule_suivante;
