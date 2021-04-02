@@ -109,10 +109,12 @@ void affiche_cel(struct CelluleContact *cellule){
 }
 
 void cellule_free(struct CelluleContact *cellule){
-    if (cellule->contact != NULL){
+    if (cellule != NULL){
+        if (cellule->contact != NULL){
         free(cellule->contact);
+        }
+        free(cellule);
     }
-    free(cellule);
 }
 
 

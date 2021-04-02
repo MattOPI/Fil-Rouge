@@ -51,6 +51,7 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
     uint32_t h = hash(name);
     uint32_t indice = h % dir->len;
     uint32_t non_present = 1;   // 'booléen' donnant l'incrémentation de l'occupation
+    char *numero = NULL;
 
     struct Contact *n_contact = nouveau_contact(name, num, h);
     struct CelluleContact *n_cellule = nouvelle_cellule(NULL, n_contact);
@@ -61,19 +62,20 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
     while (get_suivant(cellule_courante) != NULL){
         if (get_hash(get_contact(get_suivant(cellule_courante))) == h){
 
-            struct CelluleContact *cellule_suppr = supprime_suivant(cellule_courante);
-            const char *num = get_num(get_contact(cellule_suppr));
+            numero = get_num(get_contact(get_suivant(cellule_courante)));
+            supprime_suivant(cellule_courante);
 
             non_present = 0;
-            cellule_free(cellule_suppr);
             break;
         }
-        cellule_suivante = go_next(iterateur_courant);
+        cellule_courante = go_next(iterateur_courant);
     }
 
     dir->occ += non_present;
     insere_suivant(cellule_courante, n_cellule);
     free(iterateur_courant);
+
+    return numero;
 }
 
 /*
@@ -82,16 +84,17 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
 */
 const char *dir_lookup_num(struct dir *dir, const char *name)
 {
-    uint32_t i = hash(name) % dir->len;
+    uint32_t h = hash(name);
+    uint32_t i =  h % dir->len;
 
     struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-    struct CelluleContact *cellule_courante = get_current(iterateur_courant);
+    struct CelluleContact *cellule_courante = go_next(iterateur_courant); //saut de la sentinelle
 
     while (cellule_courante != NULL){
-        if (get_nom(get_contact(cellule_courante)) == name){
+        if (get_hash(get_contact(cellule_courante)) == h){
             return get_num(get_contact(cellule_courante));
         }
-        cellule_suivante = go_next(iterateur_courant);
+        cellule_courante = go_next(iterateur_courant);
     }
     free(iterateur_courant);
     return NULL;
@@ -110,12 +113,12 @@ void dir_delete(struct dir *dir, const char *name)
 
     while (get_suivant(cellule_courante) != NULL){
         if (get_nom(get_contact(get_suivant(cellule_courante))) == name){
-            cellule_free(supprime_suivant(cellule_courante));
+            supprime_suivant(cellule_courante);
             break;
             // on pourrais reajuster l'iterateur avec la valeur de retour de supprime
             // mais on ne s'en soucis pas ici car l'on n'a plus besoin de parcourir la liste
         }
-        cellule_suivante = go_next(iterateur_courant);
+        cellule_courante = go_next(iterateur_courant);
     }
     free(iterateur_courant);
 }
