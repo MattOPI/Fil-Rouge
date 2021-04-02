@@ -88,7 +88,7 @@ void dir_print(struct dir *dir)
 
         while (cellule_courante != NULL){
             affiche_cel(cellule_courante);
-            cellule_courante = get_suivant(cellule_courante)
+            cellule_courante = get_suivant(cellule_courante);
         }
     }
 }
