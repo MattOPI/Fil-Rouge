@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 
-
 /*
   Un contact représente une association {nom, numéro, hash(nom)}
 */

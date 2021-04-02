@@ -6,8 +6,8 @@
 #include <contact.h>
 #include <hash.h>
 /*
-  Structure de données représentant un annuaire.
-  Son contenu est détaillé dans directory.c. rien changé
+    Structure de données représentant un annuaire.
+    Son contenu est détaillé dans directory.c. rien changé
 */
 struct dir
 {
@@ -22,11 +22,11 @@ struct dir
 };
 
 /*
-  -----------------Init---------------------
+    -----------------Init---------------------
 */
 
 /*
-  Crée un nouvel annuaire contenant _len_ listes vides.
+    Crée un nouvel annuaire contenant _len_ listes vides.
 */
 struct dir *dir_create(uint32_t len)
 {
@@ -44,7 +44,7 @@ struct dir *dir_create(uint32_t len)
 }
 
 /*
-  -----------------Gets----------------------
+    -----------------Gets----------------------
 */
 
 uint32_t get_length(struct dir *annuaire)
@@ -63,11 +63,11 @@ struct CelluleContact **get_array(struct dir *annuaire)
 }
 
 /*
-  -----------------Retours-------------------
+    -----------------Retours-------------------
 */
 
 /*
-  Libère la mémoire associée à l"annuaire _dir_.
+    Libère la mémoire associée à l"annuaire _dir_.
 */
 void dir_free(struct dir *dir)
 {
@@ -76,7 +76,7 @@ void dir_free(struct dir *dir)
 }
 
 /*
-  Affiche sur la sortie standard le contenu de l"annuaire _dir_.
+    Affiche sur la sortie standard le contenu de l"annuaire _dir_.
 */
 void dir_print(struct dir *dir)
 {
@@ -97,14 +97,14 @@ void dir_print(struct dir *dir)
 
 
 /*
-  -----------------Fonctions-----------------
+    -----------------Fonctions-----------------
 */
 
 /*
-  Insère un nouveau contact dans l"annuaire _dir_, construit à partir des nom et
-  numéro passés en paramètre. Si il existait déjà un contact du même nom, son
-  numéro est remplacé et la fonction retourne une copie de l"ancien numéro.
-  Sinon, la fonction retourne NULL.
+    Insère un nouveau contact dans l"annuaire _dir_, construit à partir des nom et
+    numéro passés en paramètre. Si il existait déjà un contact du même nom, son
+    numéro est remplacé et la fonction retourne une copie de l"ancien numéro.
+    Sinon, la fonction retourne NULL.
 */
 char *dir_insert(struct dir *dir, const char *name, const char *num)
 {
@@ -140,8 +140,8 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
 }
 
 /*
-  Retourne le numéro associé au nom _name_ dans l"annuaire _dir_. Si aucun contact
-  ne correspond, retourne NULL.
+    Retourne le numéro associé au nom _name_ dans l"annuaire _dir_. Si aucun contact
+    ne correspond, retourne NULL.
 */
 const char *dir_lookup_num(struct dir *dir, const char *name)
 {
@@ -164,8 +164,8 @@ const char *dir_lookup_num(struct dir *dir, const char *name)
 }
 
 /*
-  Supprime le contact de nom _name_ de l"annuaire _dir_. Si aucun contact ne
-  correspond, ne fait rien.
+    Supprime le contact de nom _name_ de l"annuaire _dir_. Si aucun contact ne
+    correspond, ne fait rien.
 */
 void dir_delete(struct dir *dir, const char *name)
 {
@@ -188,7 +188,7 @@ void dir_delete(struct dir *dir, const char *name)
 
 
 /*
-  Ajuste la taille de la table
+    Ajuste la taille de la table
 */
 void dir_adjust_size(struct dir *dir)
 {
@@ -201,7 +201,7 @@ void dir_adjust_size(struct dir *dir)
 
 
 /*
-  Redimensionne la table de l'annuaire _dir_.
+    Redimensionne la table de l'annuaire _dir_.
 */
 void dir_resize(struct dir *dir, uint32_t size)
 {
