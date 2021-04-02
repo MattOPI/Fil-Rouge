@@ -25,7 +25,7 @@ void affiche_contact( struct Contact *contact);
 void contact_free( struct Contact *contact);
 
 // -----------------Fonctions-----------------
-char *copy_num(const char *numero);
+char *str_copy(const char *chaine);
 
 
 /*

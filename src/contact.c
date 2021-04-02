@@ -58,15 +58,15 @@ void contact_free( struct Contact *contact)
 }
 
 // -----------------Fonctions-----------------
-char *copy_num(const char *numero)
+char *str_copy(const char *chaine)
 {
-    char *num = "000000000000";
+    char *ch = (char *) malloc(strlen(chaine));
 
     uint32_t i;
-    for ( i = 0; i<strlen(numero); i++){
-        num[i] = numero[i];
+    for ( i = 0; i<strlen(chaine); i++){
+        ch[i] = chaine[i];
     }
-    return num;
+    return ch;
 }
 
 

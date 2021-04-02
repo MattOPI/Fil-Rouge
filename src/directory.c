@@ -89,8 +89,6 @@ void dir_print(struct dir *dir)
 
 
 
-
-
 // -----------------Fonctions-----------------
 /*
   Insère un nouveau contact dans l"annuaire _dir_, construit à partir des nom et
@@ -114,7 +112,7 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
     while (get_suivant(cellule_courante) != NULL){
         if (get_hash(get_contact(get_suivant(cellule_courante))) == h){
 
-            numero = get_num(get_contact(get_suivant(cellule_courante))); // mettre le strcpy
+            numero = str_copy(get_num(get_contact(get_suivant(cellule_courante)))); // mettre le strcpy
             supprime_suivant(cellule_courante);
 
             non_present = 0;
@@ -202,7 +200,7 @@ void dir_resize(struct dir *dir, uint32_t size)
 
         struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
 
-        //cellule_free(get_current(iterateur_courant)); //sentinelle
+        cellule_free(get_current(iterateur_courant)); //sentinelle
 
         struct CelluleContact *cellule_courante = go_next(iterateur_courant);
         while ( cellule_courante != NULL){
@@ -210,14 +208,14 @@ void dir_resize(struct dir *dir, uint32_t size)
             struct Contact *contact = get_contact(cellule_courante);
             dir_insert(n_dir,  get_nom(contact), get_num(contact));
 
-            //cellule_free(cellule_courante);
+            cellule_free(cellule_courante);
 
             cellule_courante = go_next(iterateur_courant);
         }
         iterateur_free(iterateur_courant);
     }
-    cellule_array_free(dir->T, dir->len);
-    //free(dir->T);
+    //cellule_array_free(dir->T, dir->len);
+    free(dir->T);
     dir->len = size;
     dir->T = n_dir->T;
     free(n_dir);
