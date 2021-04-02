@@ -137,7 +137,7 @@ void affiche_cel(struct CelluleContact *cellule){
 
 /*
     free la cellule donnée et renvoie son suivant,
-    le suivant n'est pas necessairement util
+    le suivant n'est pas necessairement utile
 */
 struct CelluleContact *cellule_free(struct CelluleContact *cellule){
     if (cellule->contact != NULL){
