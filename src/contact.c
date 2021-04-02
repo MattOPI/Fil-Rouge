@@ -82,13 +82,12 @@ void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cel
 /*
     supprime la cellule suivante et renvoie la nouvelle cellule suivante
 */
-struct CelluleContact *supprime_suivant(struct CelluleContact *cellule)
+void supprime_suivant(struct CelluleContact *cellule)
 {
     struct CelluleContact *cellule_suppr = cellule->suivant;
     cellule->suivant = cellule->suivant->suivant;
 
     cellule_free(cellule_suppr);
-    return cellule->suivant;
 }
 
 struct Contact *get_contact(struct CelluleContact *cellule)

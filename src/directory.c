@@ -62,7 +62,7 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
     while (get_suivant(cellule_courante) != NULL){
         if (get_hash(get_contact(get_suivant(cellule_courante))) == h){
 
-            numero = get_num(get_contact(get_suivant(cellule_courante)));
+            numero = get_num(get_contact(get_suivant(cellule_courante))); // mettre le strcpy
             supprime_suivant(cellule_courante);
 
             non_present = 0;
@@ -70,10 +70,10 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
         }
         cellule_courante = go_next(iterateur_courant);
     }
+    free(iterateur_courant);
 
     dir->occ += non_present;
     insere_suivant(cellule_courante, n_cellule);
-    free(iterateur_courant);
 
     return numero;
 }
@@ -115,7 +115,7 @@ void dir_delete(struct dir *dir, const char *name)
         if (get_nom(get_contact(get_suivant(cellule_courante))) == name){
             supprime_suivant(cellule_courante);
             break;
-            // on pourrais reajuster l'iterateur avec la valeur de retour de supprime
+            // on pourrais reajuster l'iterateur
             // mais on ne s'en soucis pas ici car l'on n'a plus besoin de parcourir la liste
         }
         cellule_courante = go_next(iterateur_courant);

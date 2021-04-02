@@ -31,7 +31,7 @@ struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct C
 
 void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule);
 
-struct CelluleContact *supprime_suivant(struct CelluleContact *cellule);
+void supprime_suivant(struct CelluleContact *cellule);
 
 struct Contact *get_contact(struct CelluleContact *cellule);
 
