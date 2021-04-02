@@ -106,6 +106,8 @@ void dir_print(struct dir *dir)
     numéro passés en paramètre. Si il existait déjà un contact du même nom, son
     numéro est remplacé et la fonction retourne une copie de l"ancien numéro.
     Sinon, la fonction retourne NULL.
+    ATTENTION : comme indiqué le numéro est une copie et
+    a donc un espace mémoire réservé qu'il convient éventuellement de libérer
 */
 char *dir_insert(struct dir *dir, const char *name, const char *num)
 {
