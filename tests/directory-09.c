@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 #include <directory.h>
+#include <contact.h>
 
 int main(void)
 {
@@ -16,13 +17,13 @@ int main(void)
     dir_insert(dir, "Caporal Ketchup", "0678346533");
     dir_insert(dir, "Sergent Mayo", "06723236533");
     dir_insert(dir, "Adjudant Barbecue", "01723236533");
+
     dir_resize(dir, 10);
-    printf("c passer \n");
-    dir_print(dir);
+    //dir_print(dir);
     //dir_delete(dir, "Adjudant Barbecue");
     //dir_delete(dir, "Sergent Mayo");
     //dir_print(dir);
-    //dir_free(dir);
+    dir_free(dir);
 
     return EXIT_SUCCESS;
 }

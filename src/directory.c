@@ -21,12 +21,13 @@ struct dir
     struct CelluleContact **T;
 };
 
+// -----------------Init---------------------
 /*
 Crée un nouvel annuaire contenant _len_ listes vides.
 */
 struct dir *dir_create(uint32_t len)
 {
-    struct dir *annuaire = calloc(1, sizeof(struct dir));
+    struct dir *annuaire = malloc(sizeof(struct dir));
     annuaire->len = len;
     annuaire->occ = 0;
     annuaire->T = malloc(len*sizeof(struct  CelluleContact *));
@@ -40,6 +41,57 @@ struct dir *dir_create(uint32_t len)
     return annuaire;
 }
 
+// -----------------Gets----------------------
+uint32_t get_length(struct dir *annuaire)
+{
+    return annuaire->len;
+}
+
+uint32_t get_occupation(struct dir *annuaire)
+{
+    return annuaire->occ;
+}
+
+struct CelluleContact **get_array(struct dir *annuaire)
+{
+    return annuaire->T;
+}
+
+// -----------------Retours-------------------
+
+/*
+  Libère la mémoire associée à l"annuaire _dir_.
+*/
+void dir_free(struct dir *dir)
+{
+    cellule_array_free(dir->T, dir->len);
+    free(dir);
+}
+
+/*
+  Affiche sur la sortie standard le contenu de l"annuaire _dir_.
+*/
+void dir_print(struct dir *dir)
+{
+    uint32_t i;
+    for(i= 0; i < dir->len; i++ ){
+
+        struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
+        struct CelluleContact *cellule_courante = go_next(iterateur_courant); //saut de la sentinelle
+
+        while (cellule_courante != NULL){
+            affiche_cel(cellule_courante);
+            cellule_courante = go_next(iterateur_courant);
+        }
+        iterateur_free(iterateur_courant);
+    }
+}
+
+
+
+
+
+// -----------------Fonctions-----------------
 /*
   Insère un nouveau contact dans l"annuaire _dir_, construit à partir des nom et
   numéro passés en paramètre. Si il existait déjà un contact du même nom, son
@@ -62,7 +114,7 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
     while (get_suivant(cellule_courante) != NULL){
         if (get_hash(get_contact(get_suivant(cellule_courante))) == h){
 
-            numero = copy_num(get_num(get_contact(get_suivant(cellule_courante)))); // mettre le strcpy
+            numero = get_num(get_contact(get_suivant(cellule_courante))); // mettre le strcpy
             supprime_suivant(cellule_courante);
 
             non_present = 0;
@@ -86,18 +138,20 @@ const char *dir_lookup_num(struct dir *dir, const char *name)
 {
     uint32_t h = hash(name);
     uint32_t i =  h % dir->len;
+    const char *num = NULL;
 
     struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
     struct CelluleContact *cellule_courante = go_next(iterateur_courant); //saut de la sentinelle
 
     while (cellule_courante != NULL){
         if (get_hash(get_contact(cellule_courante)) == h){
-            return get_num(get_contact(cellule_courante));
+            num = get_num(get_contact(cellule_courante));
+            break;
         }
         cellule_courante = go_next(iterateur_courant);
     }
     iterateur_free(iterateur_courant);
-    return NULL;
+    return num;
 }
 
 /*
@@ -123,43 +177,6 @@ void dir_delete(struct dir *dir, const char *name)
     iterateur_free(iterateur_courant);
 }
 
-/*
-  Libère la mémoire associée à l"annuaire _dir_.
-*/
-void dir_free(struct dir *dir)
-{
-    uint32_t i;
-    for(i= 0; i < dir->len; i++ ){
-
-        struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-        struct CelluleContact *cellule_courante = get_current(iterateur_courant);
-
-        while (cellule_courante != NULL){
-            cellule_free(cellule_courante);
-            cellule_courante = go_next(iterateur_courant);
-        }
-        iterateur_free(iterateur_courant);
-    }
-}
-
-/*
-  Affiche sur la sortie standard le contenu de l"annuaire _dir_.
-*/
-void dir_print(struct dir *dir)
-{
-    uint32_t i;
-    for(i= 0; i < dir->len; i++ ){
-
-        struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
-        struct CelluleContact *cellule_courante = go_next(iterateur_courant); //saut de la sentinelle
-
-        while (cellule_courante != NULL){
-            affiche_cel(cellule_courante);
-            cellule_courante = go_next(iterateur_courant);
-        }
-        iterateur_free(iterateur_courant);
-    }
-}
 
 /*
   Ajuste la taille de la table
@@ -173,6 +190,7 @@ void dir_adjust_size(struct dir *dir)
     }
 }
 
+
 /*
   Redimensionne la table de l'annuaire _dir_.
 */
@@ -184,7 +202,7 @@ void dir_resize(struct dir *dir, uint32_t size)
 
         struct CelluleIterateur *iterateur_courant = nouvel_iterateur(dir->T[i]);
 
-        cellule_free(get_current(iterateur_courant)); //sentinelle
+        //cellule_free(get_current(iterateur_courant)); //sentinelle
 
         struct CelluleContact *cellule_courante = go_next(iterateur_courant);
         while ( cellule_courante != NULL){
@@ -192,12 +210,15 @@ void dir_resize(struct dir *dir, uint32_t size)
             struct Contact *contact = get_contact(cellule_courante);
             dir_insert(n_dir,  get_nom(contact), get_num(contact));
 
-            cellule_free(cellule_courante);
+            //cellule_free(cellule_courante);
 
             cellule_courante = go_next(iterateur_courant);
         }
         iterateur_free(iterateur_courant);
     }
+    cellule_array_free(dir->T, dir->len);
+    //free(dir->T);
     dir->len = size;
     dir->T = n_dir->T;
+    free(n_dir);
 }
