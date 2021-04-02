@@ -60,7 +60,7 @@ struct CelluleContact *get_suivant(struct CelluleContact *cellule);
 */
 void affiche_cel(struct CelluleContact *cellule);
 
-struct CelluleContact *cellule_free(struct CelluleContact *cellule);
+void cellule_free(struct CelluleContact *cellule);
 
 void cellule_array_free(struct CelluleContact **T, uint32_t len);
 
@@ -70,3 +70,5 @@ void cellule_array_free(struct CelluleContact **T, uint32_t len);
 void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule);
 
 void supprime_suivant(struct CelluleContact *cellule);
+
+#endif /* _CONTACT_H_ */

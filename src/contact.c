@@ -135,13 +135,18 @@ void affiche_cel(struct CelluleContact *cellule){
         printf("\n");
 }
 
+/*
+    free la cellule donnée et renvoie son suivant,
+    le suivant n'est pas necessairement util
+*/
 struct CelluleContact *cellule_free(struct CelluleContact *cellule){
     if (cellule->contact != NULL){
         contact_free(cellule->contact);
     }
+    struct CelluleContact *c_suivant = cellule->suivant;
     free(cellule);
 
-    return cellule->suivant;
+    return c_suivant;
 }
 
 void cellule_array_free(struct CelluleContact **T, uint32_t len)
