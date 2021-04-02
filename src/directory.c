@@ -70,7 +70,7 @@ char *dir_insert(struct dir *dir, const char *name, const char *num)
         }
         cellule_courante = go_next(iterateur_courant);
     }
-    free(iterateur_courant);
+    iterateur_free(iterateur_courant);
 
     dir->occ += non_present;
     insere_suivant(cellule_courante, n_cellule);
@@ -96,7 +96,7 @@ const char *dir_lookup_num(struct dir *dir, const char *name)
         }
         cellule_courante = go_next(iterateur_courant);
     }
-    free(iterateur_courant);
+    iterateur_free(iterateur_courant);
     return NULL;
 }
 
@@ -120,7 +120,7 @@ void dir_delete(struct dir *dir, const char *name)
         }
         cellule_courante = go_next(iterateur_courant);
     }
-    free(iterateur_courant);
+    iterateur_free(iterateur_courant);
 }
 
 /*
@@ -138,7 +138,7 @@ void dir_free(struct dir *dir)
             cellule_free(cellule_courante);
             cellule_courante = go_next(iterateur_courant);
         }
-        free(iterateur_courant);
+        iterateur_free(iterateur_courant);
     }
 }
 
@@ -157,7 +157,7 @@ void dir_print(struct dir *dir)
             affiche_cel(cellule_courante);
             cellule_courante = go_next(iterateur_courant);
         }
-        free(iterateur_courant);
+        iterateur_free(iterateur_courant);
     }
 }
 
@@ -196,7 +196,7 @@ void dir_resize(struct dir *dir, uint32_t size)
 
             cellule_courante = go_next(iterateur_courant);
         }
-        free(iterateur_courant);
+        iterateur_free(iterateur_courant);
     }
     dir->len = size;
     dir->T = n_dir->T;

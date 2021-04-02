@@ -5,7 +5,11 @@
 
 #include <hash.h>
 
-struct Contact   // comment peut-on rentrer des valeurs des la contruction du type? style contact(nom, num)
+
+/*
+    Un contact représente une association {nom, numéro, hash(nom)}
+*/
+struct Contact
 {
     /* valeurs */
     const char *nom;
@@ -14,7 +18,7 @@ struct Contact   // comment peut-on rentrer des valeurs des la contruction du ty
 
 };
 
-
+// Init
 struct Contact *nouveau_contact(const char *nom, const char *numero, uint32_t hash)
 {
     struct Contact *n_contact = malloc(sizeof( struct Contact));
@@ -25,16 +29,7 @@ struct Contact *nouveau_contact(const char *nom, const char *numero, uint32_t ha
     return n_contact;
 }
 
-void affiche_contact( struct Contact *contact)
-{
-    printf("(%s, %s)", contact->nom, contact->numero);
-}
-
-void contact_free( struct Contact *contact)
-{
-    free(contact);
-}
-
+// Gets
 const char *get_nom(struct Contact *contact)
 {
     return contact->nom;
@@ -50,11 +45,27 @@ uint32_t get_hash(struct Contact *contact)
     return contact->hash;
 }
 
+// Fonctions
+
+// Retours
+void affiche_contact( struct Contact *contact)
+{
+    printf("(%s, %s)", contact->nom, contact->numero);
+}
+
+void contact_free( struct Contact *contact)
+{
+    free(contact);
+}
 
 
 
 
 
+
+/*
+    Une Cellule est caractérisé par un contact et une cellule suivante
+*/
 struct CelluleContact
 {
     /* valeur*/
@@ -64,7 +75,7 @@ struct CelluleContact
     struct CelluleContact *suivant;
 };
 
-
+// Init
 struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct Contact *contact)
 {
     struct CelluleContact *n_cellule = malloc(sizeof( struct CelluleContact));
@@ -73,23 +84,7 @@ struct CelluleContact *nouvelle_cellule(struct CelluleContact *suivant, struct C
     return n_cellule;
 }
 
-void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule )
-{
-    n_cellule->suivant = cellule->suivant;
-    cellule->suivant = n_cellule;
-}
-
-/*
-    supprime la cellule suivante et renvoie la nouvelle cellule suivante
-*/
-void supprime_suivant(struct CelluleContact *cellule)
-{
-    struct CelluleContact *cellule_suppr = cellule->suivant;
-    cellule->suivant = cellule->suivant->suivant;
-
-    cellule_free(cellule_suppr);
-}
-
+// Gets
 struct Contact *get_contact(struct CelluleContact *cellule)
 {
     return cellule->contact;
@@ -100,6 +95,22 @@ struct CelluleContact *get_suivant(struct CelluleContact *cellule)
     return cellule->suivant;
 }
 
+// Fonctions
+void insere_suivant(struct CelluleContact *cellule, struct CelluleContact *n_cellule )
+{
+    n_cellule->suivant = cellule->suivant;
+    cellule->suivant = n_cellule;
+}
+
+void supprime_suivant(struct CelluleContact *cellule)
+{
+    struct CelluleContact *cellule_suppr = cellule->suivant;
+    cellule->suivant = cellule->suivant->suivant;
+
+    cellule_free(cellule_suppr);
+}
+
+// Retours
 void affiche_cel(struct CelluleContact *cellule){
         if (cellule->contact != NULL){
             affiche_contact(cellule->contact);
@@ -108,20 +119,16 @@ void affiche_cel(struct CelluleContact *cellule){
 }
 
 void cellule_free(struct CelluleContact *cellule){
-    if (cellule != NULL){
-        if (cellule->contact != NULL){
-        free(cellule->contact);
-        }
-        free(cellule);
+    if (cellule->contact != NULL){
+        contact_free(cellule->contact);
     }
+    free(cellule);
 }
 
 
 /*
-    Structure d'itérateur et fonctions associées
+    Un itérateur est caractérisé par une référence vers une cellule et vers son suivant
 */
-
-
 struct CelluleIterateur
 {
     struct CelluleContact *cellule_courante;
@@ -129,6 +136,7 @@ struct CelluleIterateur
     struct CelluleContact *cellule_suivante;
 };
 
+// Init
 struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *tete)
 {
     struct CelluleIterateur *iterateur = malloc(sizeof(struct CelluleIterateur));
@@ -141,11 +149,13 @@ struct CelluleIterateur *nouvel_iterateur(struct CelluleContact *tete)
     return iterateur;
 }
 
+// Gets
 struct CelluleContact *get_current(struct CelluleIterateur *iterateur)
 {
     return iterateur->cellule_courante;
 }
 
+// Fonctions
 struct CelluleContact *go_next(struct CelluleIterateur *iterateur)
 {
     iterateur->cellule_courante = iterateur->cellule_suivante;
@@ -154,4 +164,10 @@ struct CelluleContact *go_next(struct CelluleIterateur *iterateur)
         iterateur->cellule_suivante = iterateur->cellule_suivante->suivant;
     }
     return  iterateur->cellule_courante;
+}
+
+// Retours
+void iterateur_free(struct CelluleIterateur *iterateur)
+{
+    free(iterateur);
 }
