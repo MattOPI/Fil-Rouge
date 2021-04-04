@@ -17,13 +17,11 @@
     Cela rend également l'objet 'Dir' plus accéssible depuis l'extérieur.
 
 ## Fonction Init de directory.c
-    -> Je choisi de placer une sentinelle au debut de chaque liste chainée
-    pour facilité l'initialisation des pointeurs qui serviront à l'itération.
+    -> Je choisi de placer une sentinelle au debut de chaque liste chainée pour facilité l'initialisation des pointeurs qui serviront à l'itération.
     Et pour s'assurer de l'initialisation de chaque pointeur
 
 ## Fonction Insert de directory.c
-    -> J'ai fait le choix de supprimer le suivant pour ensuite faire une insertion
-    lorsque'il faut remplacer un contact.
+    -> J'ai fait le choix de supprimer le suivant pour ensuite faire une insertion lorsque'il faut remplacer un contact.
     Plutot que de directement changer le suivant.
     Ce changement demande quelques opérations supplémentaire,
     mais je trouve que cela rend le code plus lisible.
