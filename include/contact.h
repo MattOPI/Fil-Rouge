@@ -59,7 +59,7 @@ struct CelluleContact *get_suivant(struct CelluleContact *cellule);
 */
 void affiche_cel(struct CelluleContact *cellule);
 
-void cellule_free(struct CelluleContact *cellule);
+struct CelluleContact *cellule_free(struct CelluleContact *cellule);
 
 void cellule_array_free(struct CelluleContact **T, uint32_t len);
 
